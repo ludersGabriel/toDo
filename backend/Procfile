@@ -1,1 +1,1 @@
-web: yarn setup && yarn build && yarn start
+web: yarn install && yarn deploy
