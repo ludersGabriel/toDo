@@ -5,7 +5,12 @@ import { Container, ListContainer } from '../styles/pages/home'
 import { GetServerSideProps } from 'next'
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const infoResult = await info()
+  let infoResult
+  try {
+    infoResult = await info()
+  } catch {
+    infoResult = 'the backend seems to be offline'
+  }
 
   return {
     props: {
@@ -14,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
 }
 
-interface IHomeProps{
+interface IHomeProps {
   info: string
 }
 
@@ -25,7 +30,7 @@ const Home: React.FC<IHomeProps> = ({ info }) => {
         <title>Template Repo</title>
       </Head>
 
-      <Anonymous/>
+      <Anonymous />
       <h1>NextJS and NodeJS structure</h1>
       <ListContainer>
         <fieldset>
