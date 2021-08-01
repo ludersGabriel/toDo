@@ -23,7 +23,7 @@ const main = async () => {
   })
 
   apolloServer
-    .listen(4000)
+    .listen(process.env.PORT || 4000)
     .then(({ url }) => {
       console.log(`Server is running at ${url}`)
     })
