@@ -1,1 +1,3 @@
-web: yarn deploy
+web: yarn start
+
+release: yarn deploy

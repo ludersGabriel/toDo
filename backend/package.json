@@ -15,8 +15,8 @@
     "db:reset": "yarn prisma migrate reset",
     "db:seed": "yarn prisma db seed --preview-feature",
     "setup": "yarn docker:init && yarn db:migrate && yarn db:seed",
-    "docker:init": "docker-compose up -d",
-    "deploy": "yarn prisma migrate deploy && yarn prisma generate && yarn start"
+    "docker:init": "docker-compose up -d --remove-orphans",
+    "deploy": "yarn prisma migrate deploy && yarn prisma generate"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
