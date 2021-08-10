@@ -14,8 +14,10 @@
     "db:migrate": "yarn prisma migrate dev && yarn prisma generate",
     "db:reset": "yarn prisma migrate reset",
     "db:seed": "yarn prisma db seed --preview-feature",
-    "setup": "yarn docker:init && yarn db:migrate && yarn db:seed",
-    "docker:init": "docker-compose up -d --remove-orphans",
+    "test:setup": "yarn db:migrate && yarn db:seed",
+    "dev:init": "yarn dev:down && yarn dev:up",
+    "dev:up": "docker-compose up -d --remove-orphans",
+    "dev:down": "docker-compose down",
     "deploy": "yarn prisma migrate deploy && yarn prisma generate"
   },
   "devDependencies": {
