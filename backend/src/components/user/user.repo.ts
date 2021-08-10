@@ -54,7 +54,11 @@ export class UserRepo {
   }
 
   async users (): Promise<User[]> {
-    return this.prisma.user.findMany()
+    return this.prisma.user.findMany({
+      include: {
+        tasks: true
+      }
+    })
   }
 }
 

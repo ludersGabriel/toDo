@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID, InputType } from 'type-graphql'
 import { IsEmail, MinLength } from 'class-validator'
+import { Task } from '@components/task/task.dto'
 
 @ObjectType()
 export class PrivateUser {
@@ -27,37 +28,41 @@ export class User {
   @Field((type) => ID)
   id: string
 
-  @Field()
+  @Field((type) => String)
   email: string
 
-  @Field()
+  @Field((type) => String)
   name: string
 
-  @Field()
+  @Field((type) => Number)
   count: number
 
-  @Field()
+  @Field((type) => String)
   role: string
+
+  @Field((type) => [Task], { nullable: true })
+  tasks?: Task[]
 }
 
 @InputType()
 export class UserRegisterInput {
-  @Field()
+  @Field((type) => String)
   @IsEmail()
   email: string
 
-  @Field()
+  @Field((type) => String)
   @MinLength(8)
   password: string
 
-  @Field() name: string
+  @Field((type) => String) name: string
 }
 
 @InputType()
 export class UserUpdateInput {
   @Field(() => ID) id: string
 
-  @Field({ nullable: true }) name?: string
+  @Field((type) => String, { nullable: true })
+  name?: string
 
   @Field({ nullable: true })
   @IsEmail()
