@@ -7,5 +7,5 @@ export interface Context {
     id: string,
     role: string,
     count: number
-  } | null
+  }
 }

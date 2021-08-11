@@ -1,7 +1,7 @@
-import { User, UserRegisterInput, UserUpdateInput } from './user.dto'
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { User, UserRegisterInput } from './user.dto'
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Context } from '@src/context'
-import { checkAuth, hash } from '@utils/auth'
+import { hash } from '@utils/auth'
 import { userRepo } from './user.repo'
 
 @Resolver(User)
@@ -23,44 +23,25 @@ export class UserResolver {
     )
   }
 
-  @Mutation(() => User, { nullable: true })
-  async updateUser (
-    @Arg('data') data: UserUpdateInput,
-    @Ctx() ctx: Context
-  ): Promise<User> {
-    await checkAuth(ctx)
-
-    if (data?.password) {
-      data.password = await hash(data.password)
-    }
-
-    return this.userRepo.updateUser(data)
-  }
-
+  @Authorized()
   @Mutation(() => User, { nullable: true })
   async deleteUser (
-    @Arg('id') id: string,
-    @Ctx() ctx: Context
+    @Arg('id') id: string
   ): Promise<User> {
-    await checkAuth(ctx)
     return this.userRepo.deleteUser(id)
   }
 
+  @Authorized()
   @Query(() => User, { nullable: true })
   async user (
-    @Arg('id') id: string,
     @Ctx() ctx: Context
   ): Promise<User | null> {
-    await checkAuth(ctx)
-    return this.userRepo.user(id)
+    return this.userRepo.user(ctx.user.id)
   }
 
+  @Authorized('admin')
   @Query(() => [User])
-  async users (
-    @Ctx() ctx: Context
-  ): Promise<User[]> {
-    await checkAuth(ctx, 'admin')
-
+  async users (): Promise<User[]> {
     return this.userRepo.users()
   }
 }

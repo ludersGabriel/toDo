@@ -20,7 +20,10 @@ export class Task {
   completed: boolean | null
 
   @Field((type) => User, { nullable: true })
-  author?: User | null
+  user?: User | null
+
+  @Field(type => String, { nullable: true })
+  userId?: String | null
 }
 
 @InputType()
@@ -45,17 +48,17 @@ export class TaskUpdateInput {
   @Field(() => ID)
   id: string
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @MinLength(3)
-  name: string
+  name?: string
 
   @Field(() => String, { nullable: true })
   @MaxLength(50)
-  description?: string
+  description?: string | null
 
   @Field(() => Date, { nullable: true })
-  date?: Date
+  date?: Date | null
 
   @Field(() => Boolean, { nullable: true })
-  completed?: boolean
+  completed?: boolean | null
 }
