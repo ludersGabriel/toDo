@@ -1,12 +1,13 @@
 import 'reflect-metadata'
 import { ApolloServer } from 'apollo-server'
 import { buildSchema } from 'type-graphql'
-import { getUser } from '@utils/auth'
+import { getUser, authChecker } from '@utils/auth'
 import path from 'path'
 
 const main = async () => {
   const schema = await buildSchema({
-    resolvers: [path.join(__dirname, '/components/**/*.resolver.{ts,js}')]
+    resolvers: [path.join(__dirname, '/components/**/*.resolver.{ts,js}')],
+    authChecker
   })
 
   const apolloServer = new ApolloServer({

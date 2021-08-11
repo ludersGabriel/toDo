@@ -7,12 +7,13 @@ const hash = (str: string): Promise<string> => bcrypt.hash(str, 12)
 
 async function main () {
   await prisma.user.upsert({
-    where: { email: 'testUser_1@todo.io' },
+    where: { email: 'admin@gmail.com' },
     update: {},
     create: {
-      email: 'testeUser_1@todo.io',
-      name: 'testUser_1',
-      password: await hash('1234mudar')
+      email: 'admin@gmail.com',
+      name: 'admin',
+      password: await hash('1234mudar'),
+      role: 'admin'
     }
   })
 

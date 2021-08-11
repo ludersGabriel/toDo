@@ -1,7 +1,7 @@
 import { prisma } from '@src/context'
 import { UserRegisterInput, UserUpdateInput, User, PrivateUser } from './user.dto'
 
-export class UserRepo {
+class UserRepo {
   private readonly prisma = prisma
 
   async registerUser (
@@ -54,7 +54,12 @@ export class UserRepo {
   }
 
   async users (): Promise<User[]> {
-    return this.prisma.user.findMany()
+    return this.prisma.user.findMany({
+      include: {
+        tasks: true,
+        projects: true
+      }
+    })
   }
 }
 

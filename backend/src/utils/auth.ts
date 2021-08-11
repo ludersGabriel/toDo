@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { AuthenticationError } from 'apollo-server'
 import { Context } from '@src/context'
 import { userRepo } from '@components/user/user.repo'
+import { AuthChecker } from 'type-graphql'
 
 export const hash = (str: string): Promise<string> => bcrypt.hash(str, 12)
 
@@ -11,11 +12,17 @@ export const checkPassword = (
   hashedPassword: string
 ):Promise<boolean> => bcrypt.compare(inputPassword, hashedPassword)
 
+const defaultUser = {
+  id: '',
+  role: '',
+  count: -1
+}
+
 const getTokenPayload = (token: string) => {
   try {
     return jwt.verify(token, process.env.APP_SECRET || '') as any
   } catch {
-    return { user: null }
+    return { user: defaultUser }
   }
 }
 
@@ -27,12 +34,18 @@ export const AuthError = () => new AuthenticationError('user not authenticaded')
 
 export const RoleError = () => new AuthenticationError('wrong permissions to use this endpoint')
 
-export const checkAuth = async (ctx: Context, roleCheck = '') => {
-  if (!ctx.user) throw AuthError()
+export const OwnerError = () => new AuthenticationError('wrong ownership to use this endpoint')
 
-  if (roleCheck && ctx.user?.role !== roleCheck) throw RoleError()
+export const authChecker: AuthChecker<Context> = async (
+  { root, args, context, info },
+  roles
+) => {
+  const user = await userRepo.user(context.user.id)
+  if (context.user === defaultUser || !user) throw AuthError()
 
-  const user = await userRepo.user(ctx.user?.id)
+  if (roles.length > 0 && !roles.includes(context.user.role)) throw RoleError()
 
-  if (ctx.user?.count !== user?.count) throw AuthError()
+  if (user?.count !== context.user.count) throw AuthError()
+
+  return true
 }
