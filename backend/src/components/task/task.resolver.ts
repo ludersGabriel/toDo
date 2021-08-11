@@ -19,12 +19,15 @@ export class TaskResolver {
   @Mutation(() => Task)
   async createTask (
     @Arg('data') data: TaskCreateInput,
+    @Arg('projectId') projectId: string,
     @Ctx() ctx: Context
   ): Promise<Task> {
     const userId = ctx.user.id
+
     return this.taskRepo.createTask(
       data,
-      userId
+      userId,
+      projectId
     )
   }
 
