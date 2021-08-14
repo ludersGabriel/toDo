@@ -1,5 +1,4 @@
 import { prisma } from '../seed'
-import 'colors'
 
 export const taskSeed = async () => {
   try {
