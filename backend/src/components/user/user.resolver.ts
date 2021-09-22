@@ -1,34 +1,28 @@
 import { User, UserRegisterInput } from './user.dto'
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Context } from '@src/context'
-import { hash } from '@utils/auth'
-import { userRepo } from './user.repo'
+
+import { userService } from './user.service'
 
 @Resolver(User)
 export class UserResolver {
-  private readonly userRepo = userRepo
+  private readonly service = userService
 
   @Mutation(() => User)
   async registerUser (
     @Arg('data') data: UserRegisterInput
   ): Promise<User> {
-    const hashedPassword = await hash(data.password)
-
-    return this.userRepo.registerUser(
-      {
-        email: data.email,
-        name: data.name,
-        password: hashedPassword
-      }
-    )
+    return this.service.register(data)
   }
 
   @Authorized()
   @Mutation(() => User, { nullable: true })
   async deleteUser (
-    @Arg('id') id: string
+    @Ctx() ctx: Context
   ): Promise<User> {
-    return this.userRepo.deleteUser(id)
+    const { user } = ctx
+
+    return this.service.delete(user.id)
   }
 
   @Authorized()
@@ -36,12 +30,13 @@ export class UserResolver {
   async user (
     @Ctx() ctx: Context
   ): Promise<User | null> {
-    return this.userRepo.user(ctx.user.id)
+    const { user } = ctx
+    return this.service.find(user.id)
   }
 
   @Authorized('admin')
   @Query(() => [User])
   async users (): Promise<User[]> {
-    return this.userRepo.users()
+    return this.service.findAll()
   }
 }
