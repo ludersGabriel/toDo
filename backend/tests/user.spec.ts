@@ -1,12 +1,12 @@
 import { User, UserRegisterInput } from '../src/components/user/user.dto'
 import { userService } from '../src/components/user/user.service'
 
-describe('testing user service 3', () => {
+describe('testing user service', () => {
   const service = userService
 
-  test('testing register function 3', async () => {
+  test('testing register function', async () => {
     const userData: UserRegisterInput = {
-      email: 'test3@test.com',
+      email: 'test@test.com',
       name: 'test seed',
       password: '1234mudar'
     }
