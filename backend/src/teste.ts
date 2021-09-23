@@ -23,6 +23,15 @@ async function main () {
   // })
 
   // console.log(allUsers)
+
+  const many = await prisma.project.deleteMany({
+    where: {
+      id: 'fe4b9a12-8a62-4374-94f5-ca52efa2a904',
+      userId: '6f5bd7a2-fa9a-4ea4-a9cf-4bd22e7b6570'
+    }
+  })
+
+  console.log(many)
 }
 
 main()
