@@ -52,7 +52,7 @@ class ProjectRepo {
   ): Promise<Project[]> {
     return this.prisma.project.findMany({
       where: {
-        id: userId
+        userId
       }
     })
   }

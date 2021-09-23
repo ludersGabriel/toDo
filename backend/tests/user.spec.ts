@@ -30,6 +30,7 @@ describe('user service', () => {
 
     const user = await service.delete(userData.id)
     expect(user).not.toBeNull()
+    expect(user.id).toBe(userData.id)
 
     const checkUser = await service.find(userData.id)
     expect(checkUser).toBeNull()
