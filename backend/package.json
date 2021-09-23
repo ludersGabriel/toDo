@@ -10,7 +10,7 @@
     "build": "babel src --extensions \".js,.ts\" --out-dir build --copy-files --no-copy-ignored",
     "start": "node build/server.js",
     "dev": "tsnd -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify src/server.ts",
-    "test": "yarn test:setup && jest --verbose --detectOpenHandles",
+    "test": "yarn test:setup && jest --verbose --detectOpenHandles --maxWorkers=1",
     "db:migrate": "yarn prisma migrate dev && yarn prisma generate",
     "db:reset": "yarn prisma migrate reset",
     "db:seed": "yarn prisma db seed --preview-feature",
