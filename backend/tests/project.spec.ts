@@ -30,7 +30,7 @@ describe('project service', () => {
       name: 'new name'
     }
 
-    const project = await service.update(projectData)
+    const project = await service.update(projectData, userId)
     expect(project).not.toBeNull()
 
     const dbProject = await service.find(projectData.id)
@@ -47,7 +47,7 @@ describe('project service', () => {
       id: 'a4c7ba35-f5d8-4cea-9aae-966fe4566a18'
     }
 
-    const project = await service.delete(projectData.id)
+    const project = await service.delete(projectData.id, userId)
     expect(project).not.toBeNull()
     expect(project.id).toBe(projectData.id)
 
