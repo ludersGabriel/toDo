@@ -27,9 +27,7 @@ export class ProjectResolver {
     @Arg('data') data: ProjectUpdateInput,
     @Ctx() ctx: Context
   ): Promise<Project> {
-    await this.service.checkOwnership(data.id, ctx)
-
-    return this.service.update(data)
+    return this.service.update(data, ctx.user.id)
   }
 
   @Authorized()
@@ -38,9 +36,7 @@ export class ProjectResolver {
     @Arg('id') projectId: string,
     @Ctx() ctx: Context
   ): Promise<Project> {
-    await this.service.checkOwnership(projectId, ctx)
-
-    return this.service.delete(projectId)
+    return this.service.delete(projectId, ctx.user.id)
   }
 
   @Authorized()

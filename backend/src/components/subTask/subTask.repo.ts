@@ -4,66 +4,86 @@ import { SubTask, SubTaskCreateInput, SubTaskUpdateInput } from './subTask.dto'
 class SubTaskRepo {
   private readonly prisma = prisma
 
-  async createSubTask (
+  async create (
     data: SubTaskCreateInput,
-    taskId: string
+    taskId: string,
+    userId: string
   ): Promise<SubTask> {
     return prisma.subTask.create({
       data: {
         ...data,
-        task: { connect: { id: taskId } }
+        task: { connect: { id: taskId } },
+        user: { connect: { id: userId } }
       }
     })
   }
 
-  async updateSubTask (
-    data: SubTaskUpdateInput
+  async update (
+    data: SubTaskUpdateInput,
+    userId: string
   ): Promise<SubTask> {
     return this.prisma.subTask.update({
       where: {
-        id: data.id
+        subTaskId_userId: {
+          id: data.id,
+          userId
+        }
       },
       data
     })
   }
 
-  async deleteSubTask (
-    subTaskId: string
+  async delete (
+    subTaskId: string,
+    userId: string
   ): Promise<SubTask> {
     return this.prisma.subTask.delete({
       where: {
-        id: subTaskId
+        subTaskId_userId: {
+          id: subTaskId,
+          userId
+        }
       }
     })
   }
 
-  async subTask (
-    subTaskId: string
+  async find (
+    subTaskId: string,
+    userId: string
   ): Promise<SubTask | null> {
     return this.prisma.subTask.findUnique({
       where: {
-        id: subTaskId
+        subTaskId_userId: {
+          id: subTaskId,
+          userId
+        }
       }
     })
   }
 
-  async subTasks (
-    taskId: string
+  async findAll (
+    taskId: string,
+    userId: string
   ): Promise<SubTask[]> {
     return this.prisma.subTask.findMany({
       where: {
-        taskId
+        taskId,
+        userId
       }
     }
     )
   }
 
   async taskBySubTask (
-    subTaskId: string
+    subTaskId: string,
+    userId: string
   ): Promise<SubTask | null> {
     return this.prisma.subTask.findUnique({
       where: {
-        id: subTaskId
+        subTaskId_userId: {
+          id: subTaskId,
+          userId
+        }
       },
       include: { task: true }
     })

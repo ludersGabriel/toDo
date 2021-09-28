@@ -1,17 +1,8 @@
-import { OwnerError } from '@utils/auth'
 import { Project, ProjectCreateInput, ProjectUpdateInput } from './project.dto'
-import { Context } from '@src/context'
 import { projectRepo } from './project.repo'
 
 class ProjectService {
   private readonly repo = projectRepo
-
-  readonly checkOwnership = async (projectId: string, ctx: Context) => {
-    const project = await this.repo.project(projectId)
-    if (project && project.userId !== ctx.user.id) {
-      throw OwnerError()
-    }
-  }
 
   async create (
     data: ProjectCreateInput,
@@ -24,15 +15,17 @@ class ProjectService {
   }
 
   async update (
-    data: ProjectUpdateInput
+    data: ProjectUpdateInput,
+    userId: string
   ): Promise<Project> {
-    return this.repo.updateProject(data)
+    return this.repo.updateProject(data, userId)
   }
 
   async delete (
-    id: string
+    id: string,
+    userId: string
   ): Promise<Project> {
-    return this.repo.deleteProject(id)
+    return this.repo.deleteProject(id, userId)
   }
 
   async findAllByUser (

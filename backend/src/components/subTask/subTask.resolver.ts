@@ -1,28 +1,21 @@
 import { SubTask, SubTaskCreateInput, SubTaskUpdateInput } from './subTask.dto'
 import { Arg, Ctx, Authorized, Mutation, Query, Resolver } from 'type-graphql'
 import { Context } from '@src/context'
-import { subTaskRepo } from './subTask.repo'
-import { OwnerError } from '@utils/auth'
+
+import { subTaskService } from './subTask.service'
 
 @Resolver(SubTask)
 export class SubTaskResolver {
-  private readonly subTaskRepo = subTaskRepo
-
-  private readonly checkOwnership = async (subTaskId: string, ctx: Context) => {
-    const subTask = await this.subTaskRepo.taskBySubTask(subTaskId)
-
-    if (subTask && subTask.task?.userId !== ctx.user.id) {
-      throw OwnerError()
-    }
-  }
+  private readonly service = subTaskService
 
   @Authorized()
   @Mutation(() => SubTask)
   async createSubTask (
     @Arg('data') data: SubTaskCreateInput,
-    @Arg('taskId') taskId: string
+    @Arg('taskId') taskId: string,
+    @Ctx() ctx: Context
   ): Promise<SubTask> {
-    return this.subTaskRepo.createSubTask(data, taskId)
+    return this.service.create(data, taskId, ctx.user.id)
   }
 
   @Authorized()
@@ -31,9 +24,7 @@ export class SubTaskResolver {
     @Arg('data') data: SubTaskUpdateInput,
     @Ctx() ctx: Context
   ): Promise<SubTask> {
-    await this.checkOwnership(data.id, ctx)
-
-    return this.subTaskRepo.updateSubTask(data)
+    return this.service.update(data, ctx.user.id)
   }
 
   @Authorized()
@@ -42,9 +33,7 @@ export class SubTaskResolver {
     @Arg('id') subTaskId: string,
     @Ctx() ctx: Context
   ): Promise<SubTask> {
-    await this.checkOwnership(subTaskId, ctx)
-
-    return this.subTaskRepo.deleteSubTask(subTaskId)
+    return this.service.delete(subTaskId, ctx.user.id)
   }
 
   @Authorized()
@@ -53,8 +42,6 @@ export class SubTaskResolver {
     @Arg('taskId') taskId: string,
     @Ctx() ctx: Context
   ): Promise<SubTask[]> {
-    await this.checkOwnership(taskId, ctx)
-
-    return this.subTaskRepo.subTasks(taskId)
+    return this.service.findAllByTask(taskId, ctx.user.id)
   }
 }

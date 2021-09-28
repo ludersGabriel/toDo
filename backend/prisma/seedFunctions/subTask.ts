@@ -8,7 +8,8 @@ export const subTaskSeed = async () => {
           name: 'findSubTask name',
           description: 'findSubTask description',
           task: { connect: { id: '4eea2ed8-ca3e-4567-b696-298fdf7d288e' } },
-          id: '564d4129-64a5-4d85-a637-589f0639506f'
+          id: '564d4129-64a5-4d85-a637-589f0639506f',
+          user: { connect: { id: '6f5bd7a2-fa9a-4ea4-a9cf-4bd22e7b6570' } }
         }
       }),
       prisma.subTask.create({
@@ -16,7 +17,8 @@ export const subTaskSeed = async () => {
           name: 'updateSubTask name',
           description: 'updateSubTask description',
           task: { connect: { id: '4eea2ed8-ca3e-4567-b696-298fdf7d288e' } },
-          id: '764d4129-64a5-4d85-a637-589f0639508f'
+          id: '764d4129-64a5-4d85-a637-589f0639508f',
+          user: { connect: { id: '6f5bd7a2-fa9a-4ea4-a9cf-4bd22e7b6570' } }
         }
       }),
       prisma.subTask.create({
@@ -24,7 +26,8 @@ export const subTaskSeed = async () => {
           name: 'deleteSubTask name',
           description: 'deleteSubTask description',
           task: { connect: { id: '4eea2ed8-ca3e-4567-b696-298fdf7d288e' } },
-          id: '864d4129-64a5-4d85-a637-589f0639503f'
+          id: '864d4129-64a5-4d85-a637-589f0639503f',
+          user: { connect: { id: '6f5bd7a2-fa9a-4ea4-a9cf-4bd22e7b6570' } }
         }
       })
 

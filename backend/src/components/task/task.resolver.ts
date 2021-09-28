@@ -1,19 +1,12 @@
 import { Task, TaskCreateInput, TaskUpdateInput } from './task.dto'
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Context } from '@src/context'
-import { taskRepo } from './task.repo'
-import { OwnerError } from '@utils/auth'
+
+import { taskService } from './task.service'
 
 @Resolver(Task)
 export class TaskResolver {
-  private readonly taskRepo = taskRepo
-
-  private readonly checkOwnership = async (taskId: string, ctx: Context) => {
-    const task = await this.taskRepo.task(taskId)
-    if (task && task.userId !== ctx.user.id) {
-      throw OwnerError()
-    }
-  }
+  private readonly service = taskService
 
   @Authorized()
   @Mutation(() => Task)
@@ -24,7 +17,7 @@ export class TaskResolver {
   ): Promise<Task> {
     const userId = ctx.user.id
 
-    return this.taskRepo.createTask(
+    return this.service.create(
       data,
       userId,
       projectId
@@ -37,9 +30,7 @@ export class TaskResolver {
     @Arg('data') data: TaskUpdateInput,
     @Ctx() ctx: Context
   ): Promise<Task> {
-    await this.checkOwnership(data.id, ctx)
-
-    return this.taskRepo.updateTask(data)
+    return this.service.update(data, ctx.user.id)
   }
 
   @Authorized()
@@ -48,9 +39,7 @@ export class TaskResolver {
     @Arg('id') taskId: string,
     @Ctx() ctx: Context
   ): Promise<Task> {
-    await this.checkOwnership(taskId, ctx)
-
-    return this.taskRepo.deleteTask(taskId)
+    return this.service.delete(taskId, ctx.user.id)
   }
 
   @Authorized()
@@ -58,6 +47,6 @@ export class TaskResolver {
   async tasks (
     @Ctx() ctx: Context
   ): Promise<Task[]> {
-    return this.taskRepo.tasks(ctx.user.id)
+    return this.service.findAllByUser(ctx.user.id)
   }
 }

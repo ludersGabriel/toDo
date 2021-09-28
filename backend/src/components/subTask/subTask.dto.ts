@@ -24,6 +24,9 @@ export class SubTask {
 
   @Field(type => ID)
   taskId: string
+
+  @Field(type => ID)
+  userId: string
 }
 
 @InputType()
