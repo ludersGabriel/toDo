@@ -17,22 +17,30 @@ class ProjectRepo {
   }
 
   async updateProject (
-    data: ProjectUpdateInput
+    data: ProjectUpdateInput,
+    userId: string
   ): Promise<Project> {
     return this.prisma.project.update({
       where: {
-        id: data.id
+        projectId_userId: {
+          id: data.id,
+          userId
+        }
       },
       data
     })
   }
 
   async deleteProject (
-    id: string
+    id: string,
+    userId: string
   ): Promise<Project> {
     return this.prisma.project.delete({
       where: {
-        id
+        projectId_userId: {
+          id,
+          userId
+        }
       }
     })
   }
@@ -52,7 +60,7 @@ class ProjectRepo {
   ): Promise<Project[]> {
     return this.prisma.project.findMany({
       where: {
-        id: userId
+        userId
       }
     })
   }

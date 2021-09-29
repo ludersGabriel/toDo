@@ -4,7 +4,7 @@ import { Task, TaskCreateInput, TaskUpdateInput } from './task.dto'
 class TaskRepo {
   private readonly prisma = prisma
 
-  async createTask (
+  async create (
     data: TaskCreateInput,
     userId: string,
     projectId: string
@@ -18,38 +18,50 @@ class TaskRepo {
     })
   }
 
-  async updateTask (
-    data: TaskUpdateInput
+  async update (
+    data: TaskUpdateInput,
+    userId: string
   ): Promise<Task> {
     return this.prisma.task.update({
       where: {
-        id: data.id
+        taskId_userId: {
+          id: data.id,
+          userId
+        }
       },
       data
     })
   }
 
-  async deleteTask (
-    taskId: string
+  async delete (
+    taskId: string,
+    userId: string
   ): Promise<Task> {
     return this.prisma.task.delete({
       where: {
-        id: taskId
+        taskId_userId: {
+          id: taskId,
+          userId
+        }
       }
     })
   }
 
-  async task (
-    taskId: string
+  async find (
+    taskId: string,
+    userId: string
   ): Promise<Task | null> {
     return this.prisma.task.findUnique({
       where: {
-        id: taskId
+        taskId_userId: {
+          id: taskId,
+          userId
+        }
       }
     })
   }
 
-  async tasks (
+  async findAll (
     userId: string
   ): Promise<Task[]> {
     return this.prisma.task.findMany({

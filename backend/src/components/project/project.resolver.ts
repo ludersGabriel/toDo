@@ -1,19 +1,11 @@
 import { Project, ProjectCreateInput, ProjectUpdateInput } from './project.dto'
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Context } from '@src/context'
-import { projectRepo } from './project.repo'
-import { OwnerError } from '@utils/auth'
+import { projectService } from './project.service'
 
 @Resolver(Project)
 export class ProjectResolver {
-  private readonly projectRepo = projectRepo
-
-  private readonly checkOwnership = async (projectId: string, ctx: Context) => {
-    const project = await this.projectRepo.project(projectId)
-    if (project && project.userId !== ctx.user.id) {
-      throw OwnerError()
-    }
-  }
+  private readonly service = projectService
 
   @Authorized()
   @Mutation(() => Project)
@@ -23,7 +15,7 @@ export class ProjectResolver {
   ): Promise<Project> {
     const userId = ctx.user.id
 
-    return this.projectRepo.createProject(
+    return this.service.create(
       data,
       userId
     )
@@ -35,9 +27,7 @@ export class ProjectResolver {
     @Arg('data') data: ProjectUpdateInput,
     @Ctx() ctx: Context
   ): Promise<Project> {
-    await this.checkOwnership(data.id, ctx)
-
-    return this.projectRepo.updateProject(data)
+    return this.service.update(data, ctx.user.id)
   }
 
   @Authorized()
@@ -46,9 +36,7 @@ export class ProjectResolver {
     @Arg('id') projectId: string,
     @Ctx() ctx: Context
   ): Promise<Project> {
-    await this.checkOwnership(projectId, ctx)
-
-    return this.projectRepo.deleteProject(projectId)
+    return this.service.delete(projectId, ctx.user.id)
   }
 
   @Authorized()
@@ -56,6 +44,6 @@ export class ProjectResolver {
   async projects (
     @Ctx() ctx: Context
   ): Promise<Project[]> {
-    return this.projectRepo.projects(ctx.user.id)
+    return this.service.findAllByUser(ctx.user.id)
   }
 }

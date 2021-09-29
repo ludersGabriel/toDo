@@ -2,6 +2,7 @@ import { ObjectType, Field, ID, InputType } from 'type-graphql'
 import { IsEmail, MinLength } from 'class-validator'
 import { Task } from '@components/task/task.dto'
 import { Project } from '@components/project/project.dto'
+import { SubTask } from '@components/subTask/subTask.dto'
 
 @ObjectType()
 export class PrivateUser {
@@ -46,6 +47,9 @@ export class User {
 
   @Field(type => [Project], { nullable: true })
   projects?: Project[]
+
+  @Field(type => [SubTask], { nullable: true })
+  subTasks?: SubTask[]
 }
 
 @InputType()
