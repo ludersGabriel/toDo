@@ -6,13 +6,13 @@ class SubTaskService {
 
   async create (
     data: SubTaskCreateInput,
-    projectId: string,
+    taskId: string,
     userId: string
   ): Promise<SubTask> {
     return this.repo.create(
       data,
-      userId,
-      projectId
+      taskId,
+      userId
     )
   }
 
