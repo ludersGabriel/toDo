@@ -1,8 +1,10 @@
+import { useEffect } from 'react'
 import Head from 'next/head'
 import Anonymous from '../assets/anonymous.svg'
 import { info } from '../graphql/info'
 import { Container, ListContainer } from '../styles/pages/home'
 import { GetServerSideProps } from 'next'
+import { register, useLogin } from '../graphql/mutations/auth'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   let infoResult
@@ -12,18 +14,26 @@ export const getServerSideProps: GetServerSideProps = async () => {
     infoResult = 'the backend seems to be offline'
   }
 
+  const user = await useLogin({ email: 'admin@gmail.com', password: '1234mudar' })
+
   return {
     props: {
-      info: infoResult
+      info: infoResult,
+      user
     }
   }
 }
 
 interface IHomeProps {
-  info: string
+  info: string,
+  user: string
 }
 
-const Home: React.FC<IHomeProps> = ({ info }) => {
+const Home: React.FC<IHomeProps> = ({ info, user }) => {
+  useEffect(() => {
+    console.log(user)
+  })
+
   return (
     <Container>
       <Head>
