@@ -39,6 +39,7 @@
     "@graphql-codegen/typescript": "2.3.1",
     "@graphql-codegen/typescript-react-apollo": "3.2.1",
     "@graphql-codegen/typescript-operations": "2.2.0",
-    "@graphql-codegen/introspection": "2.1.0"
+    "@graphql-codegen/introspection": "2.1.0",
+    "babel-plugin-module-resolver": "^4.1.0"
   }
 }

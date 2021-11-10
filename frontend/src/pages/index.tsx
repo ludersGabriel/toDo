@@ -1,10 +1,18 @@
 import { useEffect } from 'react'
-import Head from 'next/head'
-import Anonymous from '../assets/anonymous.svg'
-import { info } from '../graphql/info'
-import { Container, ListContainer } from '../styles/pages/home'
+import { useRouter } from 'next/router'
+import { info } from '../graphql/info.query'
 import { GetServerSideProps } from 'next'
-import { register, useLogin } from '../graphql/mutations/auth'
+import Meta from '../components/meta'
+import {
+  Container,
+  LogoWrapper,
+  SubLogoWrapper,
+  ButtonWrapper,
+  GirlWrapper,
+  Try,
+  Login
+} from '../styles/pages/home'
+import Logo from '@assets/logoLight.svg'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   let infoResult
@@ -14,63 +22,52 @@ export const getServerSideProps: GetServerSideProps = async () => {
     infoResult = 'the backend seems to be offline'
   }
 
-  const user = await useLogin({ email: 'admin@gmail.com', password: '1234mudar' })
-
   return {
     props: {
-      info: infoResult,
-      user
+      info: infoResult
     }
   }
 }
 
 interface IHomeProps {
   info: string,
-  user: string
 }
 
-const Home: React.FC<IHomeProps> = ({ info, user }) => {
+const Home: React.FC<IHomeProps> = ({ info }) => {
+  const router = useRouter()
+  const { locale, locales, defaultLocale } = router
+
   useEffect(() => {
-    console.log(user)
-  })
+    console.log({ info, locale, locales, defaultLocale })
+  }, [])
 
   return (
-    <Container>
-      <Head>
-        <title>Template Repo</title>
-      </Head>
+    <>
+      <Meta title={'Todo'}/>
+      <Container>
+        <LogoWrapper>
+          <Logo />
+          <legend>A simple and clean<br/>
+          task manager</legend>
+        </LogoWrapper>
 
-      <Anonymous />
-      <h1>NextJS and NodeJS structure</h1>
-      <ListContainer>
-        <fieldset>
-          <legend>Frontend</legend>
-          <ul>
-            <li>NextJS</li>
-            <li>Typescript</li>
-            <li>Graphql with Apollo-Client</li>
-            <li>Styled-Components</li>
-            <li>Eslint</li>
-          </ul>
-        </fieldset>
-        <fieldset>
-          <legend>Backend</legend>
-          <ul>
-            <li>NodeJS</li>
-            <li>Typescript</li>
-            <li>Graphql with Apollo-Server</li>
-            <li>TypeGraphql for type-safe apis</li>
-            <li>Prisma ORM w/ PSQL</li>
-            <li>Jest for tests</li>
-            <li>Eslint</li>
-          </ul>
-        </fieldset>
-      </ListContainer>
-      <p>
-        {info}
-      </p>
+        <SubLogoWrapper>
+          <p>
+            Have you ever used a Task Manager and felt it was<br/>
+            confusing and unintuitive? That’s why we created todo!
+          </p>
+        </SubLogoWrapper>
 
-    </Container>
+        <ButtonWrapper>
+          <Try>Try it!</Try>
+          <p><span>or</span></p>
+          <Login>Login</Login>
+        </ButtonWrapper>
+
+        <GirlWrapper/>
+
+      </Container>
+    </>
   )
 }
 

@@ -1,10 +1,10 @@
-import { gql } from '@apollo/client'
-import * as Apollo from '@apollo/client'
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions = {}
+const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -37,47 +37,58 @@ export type Mutation = {
   updateTask: Task;
 };
 
+
 export type MutationCreateProjectArgs = {
   data: ProjectCreateInput;
 };
+
 
 export type MutationCreateSubTaskArgs = {
   data: SubTaskCreateInput;
   taskId: Scalars['String'];
 };
 
+
 export type MutationCreateTaskArgs = {
   data: TaskCreateInput;
   projectId: Scalars['String'];
 };
 
+
 export type MutationDeleteProjectArgs = {
   id: Scalars['String'];
 };
+
 
 export type MutationDeleteSubTaskArgs = {
   id: Scalars['String'];
 };
 
+
 export type MutationDeleteTaskArgs = {
   id: Scalars['String'];
 };
+
 
 export type MutationLoginArgs = {
   data: LoginInput;
 };
 
+
 export type MutationRegisterUserArgs = {
   data: UserRegisterInput;
 };
+
 
 export type MutationUpdateProjectArgs = {
   data: ProjectUpdateInput;
 };
 
+
 export type MutationUpdateSubTaskArgs = {
   data: SubTaskUpdateInput;
 };
+
 
 export type MutationUpdateTaskArgs = {
   data: TaskUpdateInput;
@@ -122,6 +133,7 @@ export type Query = {
   user?: Maybe<User>;
   users: Array<User>;
 };
+
 
 export type QuerySubTasksArgs = {
   taskId: Scalars['String'];
@@ -206,14 +218,10 @@ export type UserUpdateInput = {
   password?: Maybe<Scalars['String']>;
 };
 
-export type InfoQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type InfoQueryQuery = { __typename?: 'Query', info: string };
-
 export type LoginMutationVariables = Exact<{
-  email: Scalars['String'];
-  password: Scalars['String'];
+  data: LoginInput;
 }>;
+
 
 export type LoginMutation = { __typename?: 'Mutation', login: string };
 
@@ -223,45 +231,20 @@ export type RegisterMutationVariables = Exact<{
   name: Scalars['String'];
 }>;
 
+
 export type RegisterMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'User', id: string, email: string, name: string } };
 
-export const InfoQueryDocument = gql`
-    query InfoQuery {
-  info
-}
-    `
+export type InfoQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
-/**
- * __useInfoQueryQuery__
- *
- * To run a query within a React component, call `useInfoQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useInfoQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useInfoQueryQuery({
- *   variables: {
- *   },
- * });
- */
-export function useInfoQueryQuery(baseOptions?: Apollo.QueryHookOptions<InfoQueryQuery, InfoQueryQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<InfoQueryQuery, InfoQueryQueryVariables>(InfoQueryDocument, options)
-}
-export function useInfoQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InfoQueryQuery, InfoQueryQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<InfoQueryQuery, InfoQueryQueryVariables>(InfoQueryDocument, options)
-}
-export type InfoQueryQueryHookResult = ReturnType<typeof useInfoQueryQuery>;
-export type InfoQueryLazyQueryHookResult = ReturnType<typeof useInfoQueryLazyQuery>;
-export type InfoQueryQueryResult = Apollo.QueryResult<InfoQueryQuery, InfoQueryQueryVariables>;
+
+export type InfoQueryQuery = { __typename?: 'Query', info: string };
+
+
 export const LoginDocument = gql`
-    mutation login($email: String!, $password: String!) {
-  login(data: {email: $email, password: $password})
+    mutation login($data: LoginInput!) {
+  login(data: $data)
 }
-    `
+    `;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -277,15 +260,14 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      email: // value for 'email'
- *      password: // value for 'password'
+ *      data: // value for 'data'
  *   },
  * });
  */
 export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options)
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
@@ -297,7 +279,7 @@ export const RegisterDocument = gql`
     name
   }
 }
-    `
+    `;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -320,9 +302,41 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  * });
  */
 export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options)
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const InfoQueryDocument = gql`
+    query InfoQuery {
+  info
+}
+    `;
+
+/**
+ * __useInfoQueryQuery__
+ *
+ * To run a query within a React component, call `useInfoQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInfoQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInfoQueryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useInfoQueryQuery(baseOptions?: Apollo.QueryHookOptions<InfoQueryQuery, InfoQueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InfoQueryQuery, InfoQueryQueryVariables>(InfoQueryDocument, options);
+      }
+export function useInfoQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InfoQueryQuery, InfoQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InfoQueryQuery, InfoQueryQueryVariables>(InfoQueryDocument, options);
+        }
+export type InfoQueryQueryHookResult = ReturnType<typeof useInfoQueryQuery>;
+export type InfoQueryLazyQueryHookResult = ReturnType<typeof useInfoQueryLazyQuery>;
+export type InfoQueryQueryResult = Apollo.QueryResult<InfoQueryQuery, InfoQueryQueryVariables>;
