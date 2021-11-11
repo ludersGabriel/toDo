@@ -33,3 +33,12 @@ export default createGlobalStyle`
   }
 
 `
+const sizes = {
+  mobile: '320px',
+  desktop: '600px'
+}
+
+export const devices = {
+  mobile: `(min-width: ${sizes.mobile})`,
+  desktop: `(min-width: ${sizes.desktop})`
+}

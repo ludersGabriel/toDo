@@ -1,15 +1,15 @@
 import styled from 'styled-components'
+import { devices } from '../global'
 
 export const Container = styled.main`
-  display: grid;
   margin: 0 2em;
+  display: grid;
   height: 100%;
-  grid-template-areas: 
+  grid-template-areas:
     'logo'
-    'sublogo'
     'girl';
 
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto 1fr;
 
   gap: 2em;
   grid-template-columns: 1fr;
@@ -17,6 +17,10 @@ export const Container = styled.main`
   legend {
     font-size: 1.5em;
     font-weight: bold;
+
+    @media ${devices.desktop}{
+      font-size: 2em;
+    }
   }
 
   p {
@@ -24,32 +28,74 @@ export const Container = styled.main`
     color: rgba(31, 31, 42, 0.4);
     font-weight: bold;
     text-align: right;
+
+    @media ${devices.desktop}{
+      font-size: 1.3em;
+    }
+  }
+
+`
+
+export const Logo = styled.section`
+  background-image: url('./logo.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 2em;
+
+  @media ${devices.desktop}{
+    height: 3.4em;
   }
 
 `
 
 export const LogoWrapper = styled.section`
   grid-area: logo;
+  display: grid;
+  grid-template-rows: .5fr 1fr;
+  padding-top: 1em;
+  align-items: center;
+
+  @media ${devices.desktop}{
+    padding: 5% 0 0 25%;
+    gap: 1.3em;
+  }
+
 `
 
 export const SubLogoWrapper = styled.section`
-  grid-area: sublogo;
+  grid-area: girl;
+  display: grid;
+  gap: 2em;
+  grid-template-rows: auto 1fr;
+
+  @media ${devices.desktop}{
+    justify-content: center;
+    align-items: center;
+  }
 `
 export const GirlWrapper = styled.section`
   grid-area: girl;
-  width: 100%;
-  height: 100%;
+  z-index: -1;
 
   background-image: url('./girl4.png');
-  background-repeat: no-repeat; 
+  background-repeat: no-repeat;
   background-size: cover;
-  background-position: 35% 50%;
+  position: absolute;
+  bottom:0;
+  left:0;
+  width: 80%;
+  height: 50%;
+  background-position: 30% 30%;
   opacity: 0.4;
+
+  @media ${devices.desktop}{
+    background-position: left;
+    background-size: contain;
+  }
+
 `
 
 export const ButtonWrapper = styled.section`
-  grid-area: girl;
-
   align-self: baseline;
 
   display: grid;
@@ -86,11 +132,16 @@ export const ButtonWrapper = styled.section`
 export const Button = styled.button`
   border-radius: .5em;
   padding: .7em 2.4em;
-  text-align: center; 
+  text-align: center;
   background-color: red;
   font-weight: bold;
   font-size: 1em;
   color: black;
+
+  @media ${devices.desktop}{
+      font-size: 1.1em;
+      padding: .8em 4em;
+  }
 `
 export const Try = styled(Button)`
   color: white;

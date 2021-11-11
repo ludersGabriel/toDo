@@ -10,9 +10,9 @@ import {
   ButtonWrapper,
   GirlWrapper,
   Try,
-  Login
+  Login,
+  Logo
 } from '../styles/pages/home'
-import Logo from '@assets/logoLight.svg'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   let infoResult
@@ -47,22 +47,22 @@ const Home: React.FC<IHomeProps> = ({ info }) => {
       <Container>
         <LogoWrapper>
           <Logo />
-          <legend>A simple and clean<br/>
-          task manager</legend>
+          <legend>A clean and simple<br/>
+          Task manager</legend>
         </LogoWrapper>
 
         <SubLogoWrapper>
-          <p>
-            Have you ever used a Task Manager and felt it was<br/>
-            confusing and unintuitive? That’s why we created todo!
-          </p>
-        </SubLogoWrapper>
+            <p>
+              Have you ever used a Task Manager and felt it was<br/>
+              confusing and unintuitive? That’s why we created todo!
+            </p>
 
-        <ButtonWrapper>
-          <Try>Try it!</Try>
-          <p><span>or</span></p>
-          <Login>Login</Login>
-        </ButtonWrapper>
+          <ButtonWrapper>
+            <Try>Try it!</Try>
+            <p><span>or</span></p>
+            <Login>Login</Login>
+          </ButtonWrapper>
+        </SubLogoWrapper>
 
         <GirlWrapper/>
 
