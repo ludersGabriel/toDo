@@ -14,6 +14,10 @@ export const Container = styled.main`
   gap: 2em;
   grid-template-columns: 1fr;
 
+  @media ${devices.desktop}{
+    gap: 5em;
+  }
+
   legend {
     font-size: 1.5em;
     font-weight: bold;
@@ -24,7 +28,7 @@ export const Container = styled.main`
   }
 
   p {
-    font-size: 0.7em;
+    font-size: 1em;
     color: rgba(31, 31, 42, 0.4);
     font-weight: bold;
     text-align: right;
@@ -71,6 +75,7 @@ export const SubLogoWrapper = styled.section`
   @media ${devices.desktop}{
     justify-content: center;
     align-items: center;
+    gap: 5em;
   }
 `
 export const GirlWrapper = styled.section`
@@ -83,7 +88,7 @@ export const GirlWrapper = styled.section`
   position: absolute;
   bottom:0;
   left:0;
-  width: 80%;
+  width: 100%;
   height: 50%;
   background-position: 30% 30%;
   opacity: 0.4;
@@ -140,7 +145,7 @@ export const Button = styled.button`
 
   @media ${devices.desktop}{
       font-size: 1.1em;
-      padding: .8em 4em;
+      padding: 1em 5em;
   }
 `
 export const Try = styled(Button)`

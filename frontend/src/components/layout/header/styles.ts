@@ -7,7 +7,7 @@ export const HeaderWrapper = styled.header`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
-  padding: 0 1em;
+  padding: 1em 1em;
 `
 
 export const ThemeWrapper = styled.section`
