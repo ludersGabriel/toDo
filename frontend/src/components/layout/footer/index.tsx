@@ -13,7 +13,7 @@ const footerContent: TLocale = {
 const Footer = () => {
   return (
     <FooterWrapper>
-      opa footer
+      <p>This is a work in progress. Soon there will be a complete app (: </p>
     </FooterWrapper>
   )
 }

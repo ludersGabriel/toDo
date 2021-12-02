@@ -14,6 +14,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       <Content>
         {children}
       </Content>
+      <Footer />
     </Wrapper>
   )
 }
