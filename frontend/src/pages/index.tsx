@@ -15,12 +15,7 @@ import {
 } from '../styles/pages/home'
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  let infoResult
-  try {
-    infoResult = await info()
-  } catch {
-    infoResult = 'the backend seems to be offline'
-  }
+  const infoResult = 'the backend seems to be offline'
 
   return {
     props: {
@@ -36,10 +31,6 @@ interface IHomeProps {
 const Home: React.FC<IHomeProps> = ({ info }) => {
   const router = useRouter()
   const { locale, locales, defaultLocale } = router
-
-  useEffect(() => {
-    console.log({ info, locale, locales, defaultLocale })
-  }, [])
 
   return (
     <>
