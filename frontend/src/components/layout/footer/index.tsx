@@ -1,19 +1,13 @@
 import { FooterWrapper } from './styles'
-import type { TLocale } from '../../../types/locale'
-
-const footerContent: TLocale = {
-  en: {
-    title: 'footer in english'
-  },
-  'pt-BR': {
-    title: 'footer em ptbr mano'
-  }
-}
+import { useLocale } from '../../../context/locale/context'
+import { footerContent } from './content'
 
 const Footer = () => {
+  const { locale } = useLocale()
+
   return (
     <FooterWrapper>
-      <p>This is a work in progress. Soon there will be a complete app (: </p>
+      <p>{footerContent[locale].summary}</p>
     </FooterWrapper>
   )
 }

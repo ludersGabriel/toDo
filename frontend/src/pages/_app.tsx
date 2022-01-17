@@ -13,14 +13,14 @@ type Props = AppProps & {
 
 const MyApp = ({ Component, pageProps, locale }: Props) => {
   return (
-    <ThemeProvider theme={theme}>
-      <Layout>
-          <LocaleProvider locale={locale}>
-            <Component {...pageProps} />
-            <GlobalStyles />
-          </LocaleProvider>
-      </Layout>
-    </ThemeProvider>
+    <LocaleProvider locale={locale}>
+      <ThemeProvider theme={theme}>
+        <Layout>
+          <Component {...pageProps} />
+          <GlobalStyles />
+        </Layout>
+      </ThemeProvider>
+    </LocaleProvider>
   )
 }
 
@@ -28,7 +28,7 @@ MyApp.getInitialProps = async (context: AppContext) => {
   const { locale } = context.ctx
 
   return {
-    locale: locale as LocaleEnum
+    locale: locale === 'default' ? 'en' : locale as LocaleEnum
   }
 }
 

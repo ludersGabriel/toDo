@@ -1,6 +1,4 @@
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { info } from '../graphql/info.query'
+import { } from 'react'
 import { GetServerSideProps } from 'next'
 import Meta from '../components/meta'
 import {
@@ -14,6 +12,10 @@ import {
   Logo
 } from '../styles/pages/home'
 
+import { homeContent } from '../content/home/content'
+import { formatter } from '../types/locale'
+import { useLocale } from '../context/locale/context'
+
 export const getServerSideProps: GetServerSideProps = async () => {
   const infoResult = 'the backend seems to be offline'
 
@@ -25,37 +27,34 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 interface IHomeProps {
-  info: string,
+  info: string
 }
 
 const Home: React.FC<IHomeProps> = ({ info }) => {
-  const router = useRouter()
-  const { locale, locales, defaultLocale } = router
+  const { locale } = useLocale()
 
   return (
     <>
-      <Meta title={'Todo'}/>
+      <Meta title={'Todo'} />
       <Container>
         <LogoWrapper>
           <Logo />
-          <legend>A clean and simple<br/>
-          Task manager</legend>
+          <legend>{formatter(homeContent[locale].title)}</legend>
         </LogoWrapper>
 
         <SubLogoWrapper>
-            <p>
-              Have you ever used a Task Manager and felt it was<br/>
-              confusing and unintuitive? That’s why we created todo!
-            </p>
+          <p>
+            {formatter(homeContent[locale].subLogo)}
+          </p>
 
           <ButtonWrapper>
-            <Try>Try it!</Try>
-            <p><span>or</span></p>
-            <Login>Login</Login>
+            <Try>{homeContent[locale].buttonTry}</Try>
+            <p><span>{homeContent[locale].buttonOr}</span></p>
+            <Login>{homeContent[locale].buttonLogin}</Login>
           </ButtonWrapper>
         </SubLogoWrapper>
 
-        <GirlWrapper/>
+        <GirlWrapper />
 
       </Container>
     </>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { LocaleContext, LocaleEnum } from './context'
 
 type Props = {
@@ -7,12 +7,8 @@ type Props = {
 }
 
 const LocaleProvider: React.FC<Props> = ({ children, locale }) => {
-  useEffect(() => {
-    console.log(`locale from locale provider: ${locale}`)
-  }, [])
-
   return (
-    <LocaleContext.Provider value={{ locale }}>
+    <LocaleContext.Provider value={{ locale: locale || 'en' }}>
       {children}
     </LocaleContext.Provider>
   )
