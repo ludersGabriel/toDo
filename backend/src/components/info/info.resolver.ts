@@ -5,6 +5,6 @@ export class InfoResolver {
   @Query(() => String)
   async info () {
     console.log('[+] Query Info Running')
-    return 'Here you see the info query from the graphql backend'
+    return 'Here you see the info query from the graphql backend hosted at heroku'
   }
 }
