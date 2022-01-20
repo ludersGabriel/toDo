@@ -17,10 +17,15 @@
     "next-images": "^1.8.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-inlinesvg": "^2.3.0",
     "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.2.2",
+    "@graphql-codegen/introspection": "2.1.0",
+    "@graphql-codegen/typescript": "2.3.1",
+    "@graphql-codegen/typescript-operations": "2.2.0",
+    "@graphql-codegen/typescript-react-apollo": "3.2.1",
     "@types/graphql": "^14.5.0",
     "@types/node": "^16.11.6",
     "@types/react": "^17.0.34",
@@ -28,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^5.3.0",
     "@typescript-eslint/parser": "^5.3.0",
     "babel-plugin-inline-react-svg": "^2.0.1",
+    "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "^8.1.0",
     "eslint-config-next": "12.0.3",
     "eslint-config-standard": "^16.0.3",
@@ -35,11 +41,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.1",
     "eslint-plugin-react": "^7.26.1",
-    "typescript": "^4.4.4",
-    "@graphql-codegen/typescript": "2.3.1",
-    "@graphql-codegen/typescript-react-apollo": "3.2.1",
-    "@graphql-codegen/typescript-operations": "2.2.0",
-    "@graphql-codegen/introspection": "2.1.0",
-    "babel-plugin-module-resolver": "^4.1.0"
+    "typescript": "^4.4.4"
   }
 }

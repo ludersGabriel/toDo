@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { devices } from '../global'
+import SVG from 'react-inlinesvg'
 
 export const Container = styled.main`
   margin: 0 2em;
@@ -29,7 +30,7 @@ export const Container = styled.main`
 
   p {
     font-size: 1em;
-    color: rgba(31, 31, 42, 0.4);
+    color: ${props => props.theme.colors.subHeader};
     font-weight: bold;
     text-align: right;
 
@@ -40,12 +41,10 @@ export const Container = styled.main`
 
 `
 
-export const Logo = styled.section`
-  background-image: url('./logo.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
-  height: 2em;
-
+export const Logo = styled(SVG)`
+  & path {
+    fill: ${props => props.theme.logoFill};
+  }
   @media ${devices.desktop}{
     height: 3.4em;
   }
@@ -82,7 +81,7 @@ export const GirlWrapper = styled.section`
   grid-area: girl;
   z-index: -1;
 
-  background-image: url('./girl4.png');
+  background-image: url(${props => props.theme.girl});
   background-repeat: no-repeat;
   background-size: cover;
   position: absolute;
@@ -114,7 +113,7 @@ export const ButtonWrapper = styled.section`
 
   p:before,
   p:after {
-    background-color: rgba(31, 31, 42, 0.4);
+    background-color: ${props => props.theme.colors.subHeader};
     content: "";
     display: inline-block;
     height: .1em;
@@ -149,11 +148,11 @@ export const Button = styled.button`
   }
 `
 export const Try = styled(Button)`
-  color: white;
-  background-color: #1F1F2A;
+  color: ${props => props.theme.colors.buttonDarkText};
+  background-color: ${props => props.theme.colors.buttonDarkBackground};
 `
 
 export const Login = styled(Button)`
-  color: black;
-  background-color: #E0E0E1;
+  color: ${props => props.theme.colors.buttonLightText};
+  background-color: ${props => props.theme.colors.buttonLightBackground};
 `

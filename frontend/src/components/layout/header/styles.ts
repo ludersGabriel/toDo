@@ -2,12 +2,12 @@ import styled from 'styled-components'
 
 export const HeaderWrapper = styled.header`
   grid-area: header;
-  background-color: #E0E0E1;
+  background-color: ${props => props.theme.colors.header};
 
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
-  padding: 1em 1em;
+  padding: 0 2em;
 `
 
 export const ThemeWrapper = styled.section`

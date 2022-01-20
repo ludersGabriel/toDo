@@ -38,7 +38,7 @@ const Home: React.FC<IHomeProps> = ({ info }) => {
       <Meta title={'Todo'} />
       <Container>
         <LogoWrapper>
-          <Logo />
+          <Logo src='./logo.svg' viewBox='0 0 65 19' />
           <legend>{formatter(homeContent[locale].title)}</legend>
         </LogoWrapper>
 
