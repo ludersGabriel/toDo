@@ -28,6 +28,10 @@ export default createGlobalStyle`
     font: 400 16px DM Sans, sans-serif;
   }
 
+  button {
+    cursor: pointer;
+  }
+
   html {
     height: -webkit-fill-available;
   }
