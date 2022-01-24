@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken'
 import { userRepo } from '../user/user.repo'
-import { Arg, Mutation, Resolver } from 'type-graphql'
+import { Arg, Mutation, Resolver, Ctx } from 'type-graphql'
 import { LoginInput } from './auth.dto'
 import { AuthenticationError } from 'apollo-server'
 import { checkPassword } from '@utils/auth'
+import { Context } from '@src/context'
 
 @Resolver(String)
 export class AuthResolver {
@@ -34,5 +35,14 @@ export class AuthResolver {
     )
 
     return token
+  }
+
+  @Mutation(() => Boolean)
+  async isLogged (
+    @Ctx() context: Context
+  ): Promise<Boolean> {
+    const { user } = context
+
+    return !!user.id
   }
 }

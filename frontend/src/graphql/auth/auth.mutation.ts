@@ -31,7 +31,7 @@ export async function useLogin(input: LoginInput) {
   return ret
 }
 
-export async function register(email: string, password: string, name: string) {
+export async function useRegister(email: string, password: string, name: string) {
   const { data } = await client.mutate({
     mutation: REGISTER_MUTATION,
     variables: {
@@ -43,9 +43,7 @@ export async function register(email: string, password: string, name: string) {
 
   const ret = data?.registerUser
     ? data.registerUser
-    : {
-        registerUser: null
-      }
+    : { registerUser: null }
 
   return ret
 }

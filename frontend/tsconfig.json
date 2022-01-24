@@ -28,10 +28,12 @@
     "node_modules"
   ],
   "baseUrl": ".",
-    "paths": {
-      "@assets/*": [
-        "./src/assets/*"
-      ],
-
-    }
+  "paths": {
+    "@assets/*": [
+      "./src/assets/*"
+    ],
+    "@src/*": [
+      "./src/*"
+    ]
+  }
 }

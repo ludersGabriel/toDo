@@ -9,7 +9,7 @@ const Header = () => {
 
   return (
     <HeaderWrapper>
-      <Logo src='./logo.svg' height={70} width={70} viewBox='0 0 65 19' />
+      <Logo src='/logo.svg' height={70} width={70} viewBox='0 0 65 19' />
       <ThemeWrapper>
         <Moon />
         <p>{headerContent[locale].lightMode}</p>
