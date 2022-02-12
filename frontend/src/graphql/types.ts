@@ -30,6 +30,7 @@ export type Mutation = {
   deleteSubTask: SubTask;
   deleteTask: Task;
   deleteUser?: Maybe<User>;
+  isLogged: Scalars['Boolean'];
   login: Scalars['String'];
   registerUser: User;
   updateProject: Project;

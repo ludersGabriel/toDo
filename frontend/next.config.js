@@ -7,5 +7,8 @@ module.exports = withImages({
     locales: ['default', 'en', 'pt-BR'],
     defaultLocale: 'default',
   },
-  trailingSlash: true
+  trailingSlash: true,
+  publicRuntimeConfig: {
+    uri: process.env.URI,
+  },
 })

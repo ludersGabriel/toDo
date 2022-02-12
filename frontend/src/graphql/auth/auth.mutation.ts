@@ -18,7 +18,7 @@ const REGISTER_MUTATION = gql`
 }
 `
 
-export async function useLogin(input: LoginInput) {
+export async function useLogin(input: LoginInput): Promise<string> {
   const { data } = await client.mutate({
     mutation: LOGIN_MUTATION,
     variables: {
@@ -26,9 +26,9 @@ export async function useLogin(input: LoginInput) {
     }
   })
 
-  const ret = data?.login ? data.login : { login: '' }
+  const token = data?.login ? data.login : {}
 
-  return ret
+  return token
 }
 
 export async function useRegister(email: string, password: string, name: string) {
