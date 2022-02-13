@@ -6,7 +6,7 @@ type Props = {
   locale: LocaleEnum
 }
 
-const LocaleProvider: React.FC<Props> = ({ children, locale }) => {
+const LocaleProvider = ({ children, locale }: Props) => {
   return (
     <LocaleContext.Provider value={{ locale: locale || 'en' }}>
       {children}
