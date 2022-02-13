@@ -31,6 +31,9 @@ export class UserResolver {
     @Ctx() ctx: Context
   ): Promise<User | null> {
     const { user } = ctx
+
+    console.log('[+] Running user Query')
+
     return this.service.find(user.id)
   }
 

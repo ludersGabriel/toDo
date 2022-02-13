@@ -18,23 +18,12 @@ const AuthProvider = ({ children, serverToken, serverUser }: AuthProviderProps) 
 
   const isAuthenticaded = !!token && !!user
 
-  useEffect(() => {
-    if (isAuthenticaded) return
-    const { 'toDo-token': newToken } = parseCookies()
-    useUser(newToken).then(response => {
-      setUser(response)
-    })
-
-    setToken(newToken)
-  }, [])
-
   async function signIn({ email = 'admin@gmail.com', password = '1234mudar' }: LoginInput) {
     const token = await useLogin({ email, password })
-    const user = await useUser(token)
-
     setCookie(undefined, 'toDo-token', token, { maxAge: 60 * 60 * 24, path: '/' })
-
     setToken(token)
+
+    const user = await useUser()
     setUser(user)
 
     Router.push('/dashboard')

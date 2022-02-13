@@ -13,17 +13,19 @@ const USER = gql`
   }
 `
 
-export async function useUser(token: string): Promise<User | null> {
-  if (!token) return null
-
-  const { data } = await client.query({
-    query: USER,
-    context: {
-      headers: {
-        Authorization: token
+export async function useUser(token = ''): Promise<User | null> {
+  const { data } = !token
+    ? await client.query({
+      query: USER
+    })
+    : await client.query({
+      query: USER,
+      context: {
+        headers: {
+          Authorization: token
+        }
       }
-    }
-  })
+    })
 
   return data?.user
 }
