@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../../context/auth/context'
+import styled from 'styled-components'
+import { Input } from '../../styles/global'
 
 type LoginValues = {
   email: string
@@ -33,7 +35,7 @@ const Login = () => {
       height: '100%',
       width: '100%'
     }}>
-      <input {
+      <Input {
         ...register('email', {
           maxLength: { value: 100, message: 'Only 100 characters allowed' },
           minLength: { value: 10, message: 'At least 10 characters are needed' },
@@ -44,7 +46,7 @@ const Login = () => {
       />
       {errors?.email && <p>{errors?.email?.message}</p>}
 
-      <input {...register('password', {
+      <Input {...register('password', {
         maxLength: { value: 100, message: 'Only 100 characters allowed' },
         minLength: { value: 5, message: 'At least 5 characters are needed' },
         required: { value: true, message: 'Password is required' }
@@ -55,6 +57,7 @@ const Login = () => {
       {errors?.password && <p>{errors?.password?.message}</p>}
 
       <input type="submit" />
+
     </form>
 
   )

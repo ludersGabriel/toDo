@@ -48,6 +48,7 @@ export const Logo = styled(SVG)`
   @media ${devices.desktop}{
     height: 3.4em;
   }
+  cursor: pointer;
 
 `
 

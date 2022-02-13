@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
   *,
@@ -46,3 +46,7 @@ export const devices = {
   mobile: `(min-width: ${sizes.mobile})`,
   desktop: `(min-width: ${sizes.desktop})`
 }
+
+export const Input = styled.input`
+  background-color: #E5E5E5;
+`

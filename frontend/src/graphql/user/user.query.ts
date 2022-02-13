@@ -14,18 +14,27 @@ const USER = gql`
 `
 
 export async function useUser(token = ''): Promise<User | null> {
-  const { data } = !token
-    ? await client.query({
-      query: USER
-    })
-    : await client.query({
-      query: USER,
-      context: {
-        headers: {
-          Authorization: token
-        }
-      }
-    })
+  let user
 
-  return data?.user
+  try {
+    const { data } = !token
+      ? await client.query({
+        query: USER
+      })
+      : await client.query({
+        query: USER,
+        context: {
+          headers: {
+            Authorization: token
+          }
+        },
+        fetchPolicy: 'network-only'
+      })
+
+    user = data?.user
+  } catch {
+    user = null
+  }
+
+  return user
 }

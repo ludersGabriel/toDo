@@ -1,5 +1,7 @@
 import { } from 'react'
 import { GetServerSideProps } from 'next'
+import Link from 'next/link'
+import nookies from 'nookies'
 import Meta from '../components/meta'
 import {
   Container,
@@ -15,9 +17,23 @@ import {
 import { homeContent } from '../content/home/content'
 import { formatter } from '../types/locale'
 import { useLocale } from '../context/locale/context'
+import { useUser } from '../graphql/user/user.query'
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const infoResult = 'the backend seems to be offline'
+
+  const { 'toDo-token': token } = nookies.get(ctx)
+
+  const user = await useUser(token)
+
+  if (user && token) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false
+      }
+    }
+  }
 
   return {
     props: {
@@ -50,7 +66,9 @@ const Home: React.FC<IHomeProps> = ({ info }) => {
           <ButtonWrapper>
             <Try>{homeContent[locale].buttonTry}</Try>
             <p><span>{homeContent[locale].buttonOr}</span></p>
-            <Login>{homeContent[locale].buttonLogin}</Login>
+            <Link href='/login'>
+              <Login>{homeContent[locale].buttonLogin}</Login>
+            </Link>
           </ButtonWrapper>
         </SubLogoWrapper>
 

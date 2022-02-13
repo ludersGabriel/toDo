@@ -14,14 +14,7 @@ const authLink = setContext((request, { headers }) => {
   if (typeof window !== 'undefined') {
     const { 'toDo-token': newToken } = parseCookies()
     token = newToken
-  } else {
-    const { 'toDo-token': newToken } = nookies.get()
-
-    console.log({ newToken }, request.query)
-
-    token = newToken
   }
-
   return {
     headers: {
       ...headers,

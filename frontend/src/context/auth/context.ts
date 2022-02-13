@@ -4,6 +4,7 @@ import { LoginInput, User } from '../../graphql/types'
 export type AuthContextType = {
   isAuthenticaded: boolean
   signIn: (input: LoginInput) => Promise<void>
+  signOut: () => void
   token: string | null
   user: User | null
 }

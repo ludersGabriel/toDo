@@ -20,7 +20,7 @@ type Props = AppProps & {
 const MyApp = ({ Component, pageProps, locale, token, user }: Props) => {
   return (
     <AuthProvider serverToken={token} serverUser={user}>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={lightTheme}>
         <LocaleProvider locale={locale}>
           <Layout>
             <Component {...pageProps} />
@@ -37,12 +37,7 @@ MyApp.getInitialProps = async ({ ctx }: AppContext) => {
 
   const { 'toDo-token': token } = nookies.get(ctx)
 
-  let user = null
-  try {
-    user = await useUser(token)
-  } catch {
-    user = null
-  }
+  const user = await useUser(token)
 
   return {
     locale: locale === 'default' ? 'en' : locale as LocaleEnum,

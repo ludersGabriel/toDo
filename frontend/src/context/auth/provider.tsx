@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useLogin } from '../../graphql/auth/auth.mutation'
 import { LoginInput, User } from '../../graphql/types'
 import { AuthContext } from './context'
-import { setCookie, parseCookies } from 'nookies'
+import { setCookie, destroyCookie } from 'nookies'
 import Router from 'next/router'
 import { useUser } from '../../graphql/user/user.query'
 
@@ -29,8 +29,13 @@ const AuthProvider = ({ children, serverToken, serverUser }: AuthProviderProps) 
     Router.push('/dashboard')
   }
 
+  function signOut() {
+    destroyCookie(null, 'toDo-token', { path: '/' })
+    Router.push('/')
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticaded, signIn, token, user }} >
+    <AuthContext.Provider value={{ isAuthenticaded, signIn, signOut, token, user }} >
       {children}
     </AuthContext.Provider>
   )
