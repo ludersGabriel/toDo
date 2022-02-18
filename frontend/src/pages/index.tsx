@@ -62,7 +62,6 @@ const Home: React.FC<IHomeProps> = ({ info }) => {
           <p>
             {formatter(homeContent[locale].subLogo)}
           </p>
-
           <ButtonWrapper>
             <Try>{homeContent[locale].buttonTry}</Try>
             <p><span>{homeContent[locale].buttonOr}</span></p>

@@ -10,9 +10,10 @@ export const lightTheme = {
     buttonDarkText: 'white',
     buttonLightText: 'black',
     header: '#E0E0E1',
-    footer: '#E0E0E1'
+    footer: '#E0E0E1',
+    facebook: '#1877F2'
   },
-  girl: './girl4.png',
+  girl: '/girl4.png',
   logoFill: '#1F1F2A'
 }
 
@@ -29,8 +30,9 @@ export const darkTheme: Theme = {
     buttonLightBackground: 'rgba(245, 245, 245, 0.1)',
     buttonLightText: 'white',
     header: '#34343E',
-    footer: '#34343E'
+    footer: '#34343E',
+    facebook: '#1877F2'
   },
-  girl: './girlDark.png',
+  girl: '/girlDark.png',
   logoFill: 'white'
 }
