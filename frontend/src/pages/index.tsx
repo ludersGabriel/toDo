@@ -46,7 +46,7 @@ interface IHomeProps {
   info: string
 }
 
-const Home: React.FC<IHomeProps> = ({ info }) => {
+const Home = () => {
   const { locale } = useLocale()
 
   return (
@@ -63,7 +63,9 @@ const Home: React.FC<IHomeProps> = ({ info }) => {
             {formatter(homeContent[locale].subLogo)}
           </p>
           <ButtonWrapper>
-            <Try>{homeContent[locale].buttonTry}</Try>
+            <Link href='/register'>
+              <Try>{homeContent[locale].buttonTry}</Try>
+            </Link>
             <p><span>{homeContent[locale].buttonOr}</span></p>
             <Link href='/login'>
               <Login>{homeContent[locale].buttonLogin}</Login>

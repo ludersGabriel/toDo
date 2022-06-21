@@ -1,20 +1,21 @@
 import { TLocale } from '../../types/locale'
 
-export const loginContent: TLocale = {
+export const registerContent: TLocale = {
   en: {
     darkMode: 'Dark theme',
     lightMode: 'Light theme',
-    greetings: 'Welcome back!',
+    greetings: 'Create an account!',
     emailError: 'Email is required!',
     emailPlaceholder: 'Email',
     passwordError: 'Password is required!',
     passwordPlaceholder: 'Password',
-    google: 'Continue with google (in development)',
-    facebook: 'Continue with facebook (in development)',
-    notReg: 'Not registered yet!?',
-    reg: 'Register now!',
+    google: 'Create with google (in development)',
+    facebook: 'Create with facebook (in development)',
+    notReg: 'Already registered?',
+    reg: 'Login now!',
     or: 'or',
-    emailSub: 'Continue with email'
+    emailSub: 'Create with email',
+    confirmPass: 'Confirm your password'
   },
 
   'pt-BR': {
@@ -30,6 +31,7 @@ export const loginContent: TLocale = {
     notReg: 'Não é registrado ainda!?',
     reg: 'Registre-se agora!',
     or: 'ou',
-    emailSub: 'Continue com email'
+    emailSub: 'Continue com email',
+    confirmPass: 'Confirme sua senha'
   }
 }

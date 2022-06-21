@@ -54,6 +54,7 @@ export const Input = styled.input`
   border-radius: 1em;
   height: 48px;
   padding: 0 1em;
+  width: 100%;
 
   font-size: 1.1rem;
 
