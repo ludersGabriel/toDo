@@ -1,3 +1,4 @@
+import { IdArray } from '@components/utils/general'
 import { Project, ProjectCreateInput, ProjectUpdateInput } from './project.dto'
 import { projectRepo } from './project.repo'
 
@@ -6,26 +7,47 @@ class ProjectService {
 
   async create (
     data: ProjectCreateInput,
-    userId: string
+    ownerId: string
   ): Promise<Project> {
     return this.repo.createProject(
       data,
-      userId
+      ownerId
     )
   }
 
   async update (
     data: ProjectUpdateInput,
-    userId: string
+    ownerId: string
   ): Promise<Project> {
-    return this.repo.updateProject(data, userId)
+    return this.repo.updateProject(data, ownerId)
+  }
+
+  async connectUsers (
+    data: IdArray[],
+    projectId: string,
+    ownerId: string
+  ): Promise<Project> {
+    return this.repo.connectUsers(data, projectId, ownerId)
+  }
+
+  async disconnectUsers (
+    data: IdArray[],
+    projectId: string,
+    ownerId: string
+  ): Promise<Project> {
+    return this.repo.disconnectUsers(data, projectId, ownerId)
   }
 
   async delete (
     id: string,
-    userId: string
+    userId: string,
+    ownerId: string
   ): Promise<Project> {
-    return this.repo.deleteProject(id, userId)
+    if (userId === ownerId) {
+      return this.repo.deleteProject(id, ownerId)
+    }
+
+    return this.disconnectUsers([{ id: userId }], id, ownerId)
   }
 
   async findAllByUser (

@@ -1,3 +1,4 @@
+import { IdArray } from '@components/utils/general'
 import { prisma } from '@src/context'
 import { SubTask, SubTaskCreateInput, SubTaskUpdateInput } from './subTask.dto'
 
@@ -7,41 +8,84 @@ class SubTaskRepo {
   async create (
     data: SubTaskCreateInput,
     taskId: string,
-    userId: string
+    ownerId: string
   ): Promise<SubTask> {
+    const connectUsers = data?.users || []
+
     return prisma.subTask.create({
       data: {
         ...data,
+        ownerId,
         task: { connect: { id: taskId } },
-        user: { connect: { id: userId } }
+        users: { connect: [...connectUsers, { id: ownerId }] }
       }
     })
   }
 
   async update (
     data: SubTaskUpdateInput,
-    userId: string
+    ownerId: string
   ): Promise<SubTask> {
     return this.prisma.subTask.update({
       where: {
-        subTaskId_userId: {
+        subTaskId_ownerId: {
           id: data.id,
-          userId
+          ownerId
         }
       },
       data
     })
   }
 
+  async connectUsers (
+    data: IdArray[],
+    id: string,
+    ownerId: string
+  ): Promise<SubTask> {
+    return this.prisma.subTask.update({
+      where: {
+        subTaskId_ownerId: {
+          id,
+          ownerId
+        }
+      },
+      data: {
+        users: {
+          connect: [...data]
+        }
+      }
+    })
+  }
+
+  async disconnectUsers (
+    data: IdArray[],
+    id: string,
+    ownerId: string
+  ): Promise<SubTask> {
+    return this.prisma.subTask.update({
+      where: {
+        subTaskId_ownerId: {
+          id,
+          ownerId
+        }
+      },
+      data: {
+        users: {
+          disconnect: [...data]
+        }
+      }
+    })
+  }
+
   async delete (
     subTaskId: string,
-    userId: string
+    ownerId: string
   ): Promise<SubTask> {
     return this.prisma.subTask.delete({
       where: {
-        subTaskId_userId: {
+        subTaskId_ownerId: {
           id: subTaskId,
-          userId
+          ownerId
         }
       }
     })
@@ -49,13 +93,13 @@ class SubTaskRepo {
 
   async find (
     subTaskId: string,
-    userId: string
+    ownerId: string
   ): Promise<SubTask | null> {
     return this.prisma.subTask.findUnique({
       where: {
-        subTaskId_userId: {
+        subTaskId_ownerId: {
           id: subTaskId,
-          userId
+          ownerId
         }
       }
     })
@@ -68,7 +112,11 @@ class SubTaskRepo {
     return this.prisma.subTask.findMany({
       where: {
         taskId,
-        userId
+        users: {
+          some: {
+            id: userId
+          }
+        }
       }
     }
     )
@@ -76,13 +124,13 @@ class SubTaskRepo {
 
   async taskBySubTask (
     subTaskId: string,
-    userId: string
+    ownerId: string
   ): Promise<SubTask | null> {
     return this.prisma.subTask.findUnique({
       where: {
-        subTaskId_userId: {
+        subTaskId_ownerId: {
           id: subTaskId,
-          userId
+          ownerId
         }
       },
       include: { task: true }

@@ -3,6 +3,7 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Context } from '@src/context'
 
 import { taskService } from './task.service'
+import { IdArray } from '@components/utils/general'
 
 @Resolver(Task)
 export class TaskResolver {
@@ -35,16 +36,37 @@ export class TaskResolver {
 
   @Authorized()
   @Mutation(() => Task)
-  async deleteTask (
-    @Arg('id') taskId: string,
+  async connectUsers (
+    @Arg('data', _ => [IdArray]) data: IdArray[],
+    @Arg('taskId') taskId: string,
     @Ctx() ctx: Context
   ): Promise<Task> {
-    return this.service.delete(taskId, ctx.user.id)
+    return this.service.connectUsers(data, taskId, ctx.user.id)
+  }
+
+  @Authorized()
+  @Mutation(() => Task)
+  async disconnectUsers (
+    @Arg('data', _ => [IdArray]) data: IdArray[],
+    @Arg('taskId') taskId: string,
+    @Ctx() ctx: Context
+  ): Promise<Task> {
+    return this.service.disconnectUsers(data, taskId, ctx.user.id)
+  }
+
+  @Authorized()
+  @Mutation(() => Task)
+  async deleteTask (
+    @Arg('id') taskId: string,
+    @Arg('ownerId') ownerId: string,
+    @Ctx() ctx: Context
+  ): Promise<Task> {
+    return this.service.delete(taskId, ctx.user.id, ownerId)
   }
 
   @Authorized()
   @Query(() => [Task])
-  async tasks (
+  async findAllByUser (
     @Ctx() ctx: Context
   ): Promise<Task[]> {
     return this.service.findAllByUser(ctx.user.id)

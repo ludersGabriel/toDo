@@ -1,3 +1,4 @@
+import { IdArray } from '@components/utils/general'
 import { Task, TaskCreateInput, TaskUpdateInput } from './task.dto'
 import { taskRepo } from './task.repo'
 
@@ -7,27 +8,48 @@ class TaskService {
   async create (
     data: TaskCreateInput,
     projectId: string,
-    userId: string
+    ownerId: string
   ): Promise<Task> {
     return this.repo.create(
       data,
-      userId,
+      ownerId,
       projectId
     )
   }
 
   async update (
     data: TaskUpdateInput,
-    userId: string
+    ownerId: string
   ): Promise<Task> {
-    return this.repo.update(data, userId)
+    return this.repo.update(data, ownerId)
+  }
+
+  async connectUsers (
+    data: IdArray[],
+    taskId: string,
+    ownerId: string
+  ): Promise<Task> {
+    return this.repo.connectUsers(data, taskId, ownerId)
+  }
+
+  async disconnectUsers (
+    data: IdArray[],
+    taskId: string,
+    ownerId: string
+  ): Promise<Task> {
+    return this.repo.disconnectUsers(data, taskId, ownerId)
   }
 
   async delete (
     id: string,
-    userId: string
+    userId: string,
+    ownerId: string
   ): Promise<Task> {
-    return this.repo.delete(id, userId)
+    if (userId === ownerId) {
+      return this.repo.delete(id, ownerId)
+    }
+
+    return this.disconnectUsers([{ id: userId }], id, ownerId)
   }
 
   async findAllByUser (
@@ -38,9 +60,9 @@ class TaskService {
 
   async find (
     id: string,
-    userId: string
+    ownerId: string
   ): Promise<Task | null> {
-    return this.repo.find(id, userId)
+    return this.repo.find(id, ownerId)
   }
 }
 

@@ -1,5 +1,7 @@
 import { ObjectType, Field, ID, InputType } from 'type-graphql'
 import { MaxLength, MinLength } from 'class-validator'
+import { User } from '@components/user/user.dto'
+import { IdArray } from '@components/utils/general'
 
 @ObjectType()
 export class Task {
@@ -19,10 +21,13 @@ export class Task {
   completed: boolean | null
 
   @Field(type => ID)
-  userId: string
+  ownerId: string
 
   @Field(type => ID)
   projectId: string
+
+  @Field(type => [User], { nullable: true })
+    users?: User[]
 }
 
 @InputType()
@@ -40,6 +45,9 @@ export class TaskCreateInput {
 
   @Field(type => Boolean, { nullable: true })
   completed?: boolean | null
+
+  @Field(type => [IdArray], { nullable: true })
+    users?: IdArray[]
 }
 
 @InputType()

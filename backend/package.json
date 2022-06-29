@@ -14,10 +14,12 @@
     "db:migrate": "yarn prisma migrate dev && yarn prisma generate",
     "db:reset": "yarn prisma migrate reset",
     "db:seed": "yarn prisma db seed --preview-feature",
+    "db:explore": "yarn prisma studio",
     "test:setup": "yarn db:reset",
     "dev:init": "yarn dev:down && yarn dev:up",
-    "dev:up": "docker-compose up -d --remove-orphans",
-    "dev:down": "docker-compose down",
+    "dev:up": "docker compose up -d --remove-orphans",
+    "dev:down": "docker compose down",
+    "dev:all": "yarn dev:init && yarn test:setup && yarn dev",
     "deploy": "yarn prisma migrate deploy && yarn prisma generate"
   },
   "devDependencies": {
@@ -33,6 +35,7 @@
     "@types/graphql": "^14.5.0",
     "@types/jest": "^27.0.2",
     "@types/jsonwebtoken": "^8.5.5",
+    "@types/ramda": "^0.28.14",
     "@typescript-eslint/eslint-plugin": "^5.3.0",
     "@typescript-eslint/parser": "^5.3.0",
     "babel-plugin-module-resolver": "^4.1.0",
@@ -57,6 +60,7 @@
     "class-validator": "^0.13.1",
     "graphql": "15.3.0",
     "jsonwebtoken": "^8.5.1",
+    "ramda": "^0.28.0",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1"
   },

@@ -3,7 +3,7 @@ import { Project, ProjectCreateInput, ProjectUpdateInput } from '../src/componen
 
 describe('project service', () => {
   const service = projectService
-  const userId = '6f5bd7a2-fa9a-4ea4-a9cf-4bd22e7b6570'
+  const userId = '21502fea-3df0-4fe5-945d-270fa7488892'
 
   test('should create a project', async () => {
     const projectData: ProjectCreateInput = {
@@ -37,17 +37,18 @@ describe('project service', () => {
     expect(dbProject).not.toBeNull()
     for (const key in dbProject) {
       if (!(key in projectData)) continue
-      const castedKey = key as keyof ProjectCreateInput
+      const castedKey = key as keyof Omit<ProjectCreateInput, 'users'>
       expect(dbProject[key as keyof Project]).toBe(projectData[castedKey])
     }
   })
 
   test('should delete a project', async () => {
     const projectData = {
-      id: 'a4c7ba35-f5d8-4cea-9aae-966fe4566a18'
+      id: '8f91e9a0-e6a3-4942-8a59-13a6995fb034',
+      ownerId: '21502fea-3df0-4fe5-945d-270fa7488892'
     }
 
-    const project = await service.delete(projectData.id, userId)
+    const project = await service.delete(projectData.id, userId, projectData.ownerId)
     expect(project).not.toBeNull()
     expect(project.id).toBe(projectData.id)
 
@@ -58,12 +59,12 @@ describe('project service', () => {
   test('should find all projects', async () => {
     const projects = await service.findAllByUser(userId)
     expect(projects).toBeInstanceOf(Array)
-    expect(projects).toHaveLength(4)
+    expect(projects).toHaveLength(2)
   })
 
   test('should find a project', async () => {
     const projectData = {
-      id: 'fe4b9a12-8a62-4374-94f5-ca52efa2a904'
+      id: '8f91e9a0-e6a3-4942-8a59-13a6995fb033'
     }
 
     const project = await service.find(projectData.id)

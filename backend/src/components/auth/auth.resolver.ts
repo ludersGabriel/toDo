@@ -16,10 +16,10 @@ export class AuthResolver {
     @Arg('data') data: LoginInput
   ): Promise<string> {
     const user = await this.userRepo.userByEmail(data.email)
-    if (!user) throw new AuthenticationError('invalid user')
+    if (!user) throw new AuthenticationError('Usuário inválido')
 
     const isValid = await checkPassword(data.password, user.password)
-    if (!isValid) throw new AuthenticationError('invalid password')
+    if (!isValid) throw new AuthenticationError('Senha inválida')
 
     userRepo.updateUser({
       id: user.id,

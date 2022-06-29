@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { prisma } from '../seed'
 
-const hash = (str: string): Promise<string> => bcrypt.hash(str, 12)
+export const hash = (str: string): Promise<string> => bcrypt.hash(str, 12)
 
 export const userSeed = async () => {
   try {

@@ -4,7 +4,8 @@ import { Task, TaskCreateInput, TaskUpdateInput } from '../src/components/task/t
 describe('task service', () => {
   const service = taskService
   const userId = '6f5bd7a2-fa9a-4ea4-a9cf-4bd22e7b6570'
-  const projectId = '4e27bc9d-a2c2-422c-92e2-20d934463a6a'
+  const ownerId = '21502fea-3df0-4fe5-945d-270fa7488892'
+  const projectId = '8f91e9a0-e6a3-4942-8a59-13a6995fb032'
 
   test('should create a task', async () => {
     const taskData: TaskCreateInput = {
@@ -33,10 +34,10 @@ describe('task service', () => {
       completed: true
     }
 
-    const task = await service.update(taskData, userId)
+    const task = await service.update(taskData, ownerId)
     expect(task).not.toBeNull()
 
-    const dbTask = await service.find(task.id, userId)
+    const dbTask = await service.find(task.id, ownerId)
     expect(dbTask).not.toBeNull()
     for (const key in dbTask) {
       if (!(key in taskData)) continue
@@ -47,10 +48,11 @@ describe('task service', () => {
 
   test('should delete a task', async () => {
     const taskData = {
-      id: 'acaf7ccd-c258-4e17-bcf5-b214387a95da'
+      id: 'acaf7ccd-c258-4e17-bcf5-b214387a95da',
+      ownerId: '21502fea-3df0-4fe5-945d-270fa7488892'
     }
 
-    const task = await service.delete(taskData.id, userId)
+    const task = await service.delete(taskData.id, userId, taskData.ownerId)
     expect(task).not.toBeNull()
     expect(task.id).toBe(taskData.id)
 
@@ -69,7 +71,7 @@ describe('task service', () => {
       id: '79029a53-bd11-4665-82b4-e168e0399f86'
     }
 
-    const task = await service.find(taskData.id, userId)
+    const task = await service.find(taskData.id, ownerId)
     expect(task).not.toBeNull()
     expect(task?.id).toBe(taskData.id)
   })

@@ -49,6 +49,6 @@ describe('user service', () => {
   test('should find all users', async () => {
     const users = await service.findAll()
     expect(users).toBeInstanceOf(Array)
-    expect(users).toHaveLength(5)
+    expect(users).toHaveLength(6)
   })
 })

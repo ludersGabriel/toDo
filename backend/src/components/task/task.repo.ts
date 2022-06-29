@@ -1,3 +1,4 @@
+import { IdArray } from '@components/utils/general'
 import { prisma } from '@src/context'
 import { Task, TaskCreateInput, TaskUpdateInput } from './task.dto'
 
@@ -6,13 +7,16 @@ class TaskRepo {
 
   async create (
     data: TaskCreateInput,
-    userId: string,
+    ownerId: string,
     projectId: string
   ): Promise<Task> {
+    const connectUsers = data?.users || []
+
     return this.prisma.task.create({
       data: {
         ...data,
-        user: { connect: { id: userId } },
+        ownerId,
+        users: { connect: [...connectUsers, { id: ownerId }] },
         project: { connect: { id: projectId } }
       }
     })
@@ -20,28 +24,68 @@ class TaskRepo {
 
   async update (
     data: TaskUpdateInput,
-    userId: string
+    ownerId: string
   ): Promise<Task> {
     return this.prisma.task.update({
       where: {
-        taskId_userId: {
+        taskId_ownerId: {
           id: data.id,
-          userId
+          ownerId
         }
       },
       data
     })
   }
 
+  async connectUsers (
+    data: IdArray[],
+    id: string,
+    ownerId: string
+  ): Promise<Task> {
+    return this.prisma.task.update({
+      where: {
+        taskId_ownerId: {
+          id,
+          ownerId
+        }
+      },
+      data: {
+        users: {
+          connect: [...data]
+        }
+      }
+    })
+  }
+
+  async disconnectUsers (
+    data: IdArray[],
+    id: string,
+    ownerId: string
+  ): Promise<Task> {
+    return this.prisma.task.update({
+      where: {
+        taskId_ownerId: {
+          id,
+          ownerId
+        }
+      },
+      data: {
+        users: {
+          disconnect: [...data]
+        }
+      }
+    })
+  }
+
   async delete (
     taskId: string,
-    userId: string
+    ownerId: string
   ): Promise<Task> {
     return this.prisma.task.delete({
       where: {
-        taskId_userId: {
+        taskId_ownerId: {
           id: taskId,
-          userId
+          ownerId
         }
       }
     })
@@ -49,13 +93,13 @@ class TaskRepo {
 
   async find (
     taskId: string,
-    userId: string
+    ownerId: string
   ): Promise<Task | null> {
     return this.prisma.task.findUnique({
       where: {
-        taskId_userId: {
+        taskId_ownerId: {
           id: taskId,
-          userId
+          ownerId
         }
       }
     })
@@ -66,7 +110,11 @@ class TaskRepo {
   ): Promise<Task[]> {
     return this.prisma.task.findMany({
       where: {
-        userId: userId
+        users: {
+          some: {
+            id: userId
+          }
+        }
       }
     })
   }

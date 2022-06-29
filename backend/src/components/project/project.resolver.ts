@@ -2,6 +2,7 @@ import { Project, ProjectCreateInput, ProjectUpdateInput } from './project.dto'
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Context } from '@src/context'
 import { projectService } from './project.service'
+import { IdArray } from '@components/utils/general'
 
 @Resolver(Project)
 export class ProjectResolver {
@@ -32,18 +33,47 @@ export class ProjectResolver {
 
   @Authorized()
   @Mutation(() => Project)
-  async deleteProject (
-    @Arg('id') projectId: string,
+  async connectUsers (
+    @Arg('data', _ => [IdArray]) data: IdArray[],
+    @Arg('projectId') projectId: string,
     @Ctx() ctx: Context
   ): Promise<Project> {
-    return this.service.delete(projectId, ctx.user.id)
+    return this.service.connectUsers(data, projectId, ctx.user.id)
+  }
+
+  @Authorized()
+  @Mutation(() => Project)
+  async disconnectUsers (
+    @Arg('data', _ => [IdArray]) data: IdArray[],
+    @Arg('projectId') projectId: string,
+    @Ctx() ctx: Context
+  ): Promise<Project> {
+    return this.service.disconnectUsers(data, projectId, ctx.user.id)
+  }
+
+  @Authorized()
+  @Mutation(() => Project)
+  async deleteProject (
+    @Arg('id') projectId: string,
+    @Arg('ownerId') ownerId: string,
+    @Ctx() ctx: Context
+  ): Promise<Project> {
+    return this.service.delete(projectId, ctx.user.id, ownerId)
   }
 
   @Authorized()
   @Query(() => [Project])
-  async projects (
+  async findAllProjectByUser (
     @Ctx() ctx: Context
   ): Promise<Project[]> {
     return this.service.findAllByUser(ctx.user.id)
+  }
+
+  @Authorized()
+  @Query(() => Project)
+  async findProject (
+    @Arg('id') projectId: string
+  ): Promise<Project | null> {
+    return this.service.find(projectId)
   }
 }
