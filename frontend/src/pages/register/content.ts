@@ -15,7 +15,10 @@ export const registerContent: TLocale = {
     reg: 'Login now!',
     or: 'or',
     emailSub: 'Create with email',
-    confirmPass: 'Confirm your password'
+    confirmPass: 'Confirm your password',
+    wrongMatch: "Passwords don't match",
+    registerSuccess: 'User register successful',
+    alreadyRegistered: 'Account already registered or invalid email format'
   },
 
   'pt-BR': {
@@ -32,6 +35,9 @@ export const registerContent: TLocale = {
     reg: 'Registre-se agora!',
     or: 'ou',
     emailSub: 'Continue com email',
-    confirmPass: 'Confirme sua senha'
+    confirmPass: 'Confirme sua senha!',
+    wrongMatch: 'Senhas não batem!',
+    registerSuccess: 'Usuário registrado com sucesso',
+    alreadyRegistered: 'Conta já registrada ou formato de email inválido'
   }
 }

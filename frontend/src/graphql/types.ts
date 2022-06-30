@@ -16,6 +16,10 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type IdArray = {
+  id: Scalars['ID'];
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -23,6 +27,7 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  connectUsers: Task;
   createProject: Project;
   createSubTask: SubTask;
   createTask: Task;
@@ -30,12 +35,19 @@ export type Mutation = {
   deleteSubTask: SubTask;
   deleteTask: Task;
   deleteUser?: Maybe<User>;
+  disconnectUsers: Task;
   isLogged: Scalars['Boolean'];
   login: Scalars['String'];
   registerUser: User;
   updateProject: Project;
   updateSubTask: SubTask;
   updateTask: Task;
+};
+
+
+export type MutationConnectUsersArgs = {
+  data: Array<IdArray>;
+  taskId: Scalars['String'];
 };
 
 
@@ -58,16 +70,25 @@ export type MutationCreateTaskArgs = {
 
 export type MutationDeleteProjectArgs = {
   id: Scalars['String'];
+  ownerId: Scalars['String'];
 };
 
 
 export type MutationDeleteSubTaskArgs = {
   id: Scalars['String'];
+  ownerId: Scalars['String'];
 };
 
 
 export type MutationDeleteTaskArgs = {
   id: Scalars['String'];
+  ownerId: Scalars['String'];
+};
+
+
+export type MutationDisconnectUsersArgs = {
+  data: Array<IdArray>;
+  taskId: Scalars['String'];
 };
 
 
@@ -110,13 +131,15 @@ export type Project = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  ownerId: Scalars['ID'];
   tasks?: Maybe<Array<Task>>;
-  userId: Scalars['ID'];
+  users?: Maybe<Array<User>>;
 };
 
 export type ProjectCreateInput = {
   description?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  users?: Maybe<Array<IdArray>>;
 };
 
 export type ProjectUpdateInput = {
@@ -127,17 +150,23 @@ export type ProjectUpdateInput = {
 
 export type Query = {
   __typename?: 'Query';
+  findAllByUser: Array<Task>;
+  findAllByUserTask: Array<SubTask>;
+  findAllProjectByUser: Array<Project>;
+  findProject: Project;
   info: Scalars['String'];
-  projects: Array<Project>;
-  subTasks: Array<SubTask>;
-  tasks: Array<Task>;
   user?: Maybe<User>;
   users: Array<User>;
 };
 
 
-export type QuerySubTasksArgs = {
+export type QueryFindAllByUserTaskArgs = {
   taskId: Scalars['String'];
+};
+
+
+export type QueryFindProjectArgs = {
+  id: Scalars['String'];
 };
 
 export type SubTask = {
@@ -147,9 +176,10 @@ export type SubTask = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  ownerId: Scalars['ID'];
   task?: Maybe<Task>;
   taskId: Scalars['ID'];
-  userId: Scalars['ID'];
+  users?: Maybe<Array<User>>;
 };
 
 export type SubTaskCreateInput = {
@@ -157,6 +187,7 @@ export type SubTaskCreateInput = {
   date?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  users?: Maybe<Array<IdArray>>;
 };
 
 export type SubTaskUpdateInput = {
@@ -174,8 +205,9 @@ export type Task = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  ownerId: Scalars['ID'];
   projectId: Scalars['ID'];
-  userId: Scalars['ID'];
+  users?: Maybe<Array<User>>;
 };
 
 export type TaskCreateInput = {
@@ -183,6 +215,7 @@ export type TaskCreateInput = {
   date?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  users?: Maybe<Array<IdArray>>;
 };
 
 export type TaskUpdateInput = {
@@ -227,13 +260,11 @@ export type LoginMutationVariables = Exact<{
 export type LoginMutation = { __typename?: 'Mutation', login: string };
 
 export type RegisterMutationVariables = Exact<{
-  email: Scalars['String'];
-  password: Scalars['String'];
-  name: Scalars['String'];
+  data: UserRegisterInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'User', id: string, email: string, name: string } };
+export type RegisterMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'User', id: string, email: string, name: string, count: number, role: string } };
 
 export type InfoQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -243,7 +274,7 @@ export type InfoQueryQuery = { __typename?: 'Query', info: string };
 export type UserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: string, name: string, email: string, role: string } | null | undefined };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: string, name: string, email: string, role: string, count: number } | null | undefined };
 
 
 export const LoginDocument = gql`
@@ -278,11 +309,13 @@ export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const RegisterDocument = gql`
-    mutation register($email: String!, $password: String!, $name: String!) {
-  registerUser(data: {email: $email, password: $password, name: $name}) {
+    mutation register($data: UserRegisterInput!) {
+  registerUser(data: $data) {
     id
     email
     name
+    count
+    role
   }
 }
     `;
@@ -301,9 +334,7 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  * @example
  * const [registerMutation, { data, loading, error }] = useRegisterMutation({
  *   variables: {
- *      email: // value for 'email'
- *      password: // value for 'password'
- *      name: // value for 'name'
+ *      data: // value for 'data'
  *   },
  * });
  */
@@ -353,6 +384,7 @@ export const UserDocument = gql`
     name
     email
     role
+    count
   }
 }
     `;

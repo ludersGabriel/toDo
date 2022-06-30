@@ -10,6 +10,9 @@ import { LocaleEnum } from '../context/locale/context'
 import nookies from 'nookies'
 import { useUser } from '../graphql/user/user.query'
 import { User } from '../graphql/types'
+import { ApolloProvider } from '@apollo/client'
+import client from '../apollo/apollo-client'
+import { Toaster } from 'react-hot-toast'
 
 type Props = AppProps & {
   locale: LocaleEnum
@@ -19,16 +22,19 @@ type Props = AppProps & {
 
 const MyApp = ({ Component, pageProps, locale, token, user }: Props) => {
   return (
-    <AuthProvider serverToken={token} serverUser={user}>
-      <ThemeProvider theme={lightTheme}>
-        <LocaleProvider locale={locale}>
-          <Layout>
-            <Component {...pageProps} />
-            <GlobalStyles />
-          </Layout>
-        </LocaleProvider>
-      </ThemeProvider>
-    </AuthProvider>
+    <ApolloProvider client={client}>
+      <AuthProvider serverToken={token} serverUser={user}>
+        <ThemeProvider theme={lightTheme}>
+          <LocaleProvider locale={locale}>
+            <Layout>
+              <Component {...pageProps} />
+              <GlobalStyles />
+            </Layout>
+          </LocaleProvider>
+        </ThemeProvider>
+      </AuthProvider>
+      <Toaster />
+    </ApolloProvider>
   )
 }
 

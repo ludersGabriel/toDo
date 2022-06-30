@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client'
+import { omit } from 'ramda'
 import client from '../../apollo/apollo-client'
-import { User } from '../types'
+import { User, UserQuery } from '../types'
 
 const USER = gql`
   query user{
@@ -8,7 +9,8 @@ const USER = gql`
       id,
       name,
       email,
-      role
+      role,
+      count
     }
   }
 `
@@ -18,10 +20,10 @@ export async function useUser(token = ''): Promise<User | null> {
 
   try {
     const { data } = !token
-      ? await client.query({
+      ? await client.query<UserQuery>({
         query: USER
       })
-      : await client.query({
+      : await client.query<UserQuery>({
         query: USER,
         context: {
           headers: {
@@ -31,7 +33,7 @@ export async function useUser(token = ''): Promise<User | null> {
         fetchPolicy: 'network-only'
       })
 
-    user = data?.user
+    user = data?.user ? omit(['__typename'], data.user) : null
   } catch {
     user = null
   }

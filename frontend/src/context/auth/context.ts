@@ -1,10 +1,11 @@
 import { createContext, useContext } from 'react'
-import { LoginInput, User } from '../../graphql/types'
+import { LoginInput, User, UserRegisterInput } from '../../graphql/types'
 
 export type AuthContextType = {
   isAuthenticaded: boolean
   signIn: (input: LoginInput) => Promise<void>
   signOut: () => void
+  register: (data: UserRegisterInput) => Promise<User | null>
   token: string | null
   user: User | null
 }

@@ -27,11 +27,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 }
 
 const Dashboard = () => {
-  const { isAuthenticaded, user, signOut } = useAuth()
+  const { isAuthenticaded, user, signOut, token } = useAuth()
 
   return <div>
     <div>
-      token: {isAuthenticaded ? 'Tam online' : 'fora'}
+      tamOn {isAuthenticaded ? 'Tam online' : 'fora'}
+    </div>
+    <div>
+      token: {token}
     </div>
     <div>
       user: {JSON.stringify(user)}

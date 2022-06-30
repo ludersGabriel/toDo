@@ -1,6 +1,8 @@
 import { gql } from '@apollo/client'
+import { useMutation } from '@apollo/react-hooks'
+import { omit } from 'ramda'
 import client from '../../apollo/apollo-client'
-import { LoginInput } from '../types'
+import { LoginInput, RegisterMutation, User, UserRegisterInput } from '../types'
 
 const LOGIN_MUTATION = gql`
   mutation login($data: LoginInput!){
@@ -9,11 +11,13 @@ const LOGIN_MUTATION = gql`
 `
 
 const REGISTER_MUTATION = gql`
-  mutation register($email: String!, $password: String!, $name: String!) {
-   registerUser(data: {email: $email, password: $password, name: $name}) {
+  mutation register($data: UserRegisterInput!) {
+   registerUser(data: $data) {
     id
     email
     name
+    count
+    role
   }
 }
 `
@@ -31,19 +35,15 @@ export async function useLogin(input: LoginInput): Promise<string> {
   return token
 }
 
-export async function useRegister(email: string, password: string, name: string) {
-  const { data } = await client.mutate({
+export async function useRegister(input: UserRegisterInput): Promise <User | null> {
+  const { data } = await client.mutate<RegisterMutation>({
     mutation: REGISTER_MUTATION,
     variables: {
-      email,
-      password,
-      name
+      data: input
     }
   })
 
-  const ret = data?.registerUser
-    ? data.registerUser
-    : { registerUser: null }
+  const ret = data?.registerUser ? omit(['__typename'], data.registerUser) : null
 
   return ret
 }

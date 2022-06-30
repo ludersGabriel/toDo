@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useLogin } from '../../graphql/auth/auth.mutation'
-import { LoginInput, User } from '../../graphql/types'
+import { useLogin, useRegister } from '../../graphql/auth/auth.mutation'
+import { LoginInput, User, UserRegisterInput } from '../../graphql/types'
 import { AuthContext } from './context'
 import { setCookie, destroyCookie } from 'nookies'
 import Router from 'next/router'
@@ -34,8 +34,14 @@ const AuthProvider = ({ children, serverToken, serverUser }: AuthProviderProps) 
     Router.push('/')
   }
 
+  async function register(data: UserRegisterInput): Promise<User | null> {
+    const user = await useRegister(data)
+
+    return user
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticaded, signIn, signOut, token, user }} >
+    <AuthContext.Provider value={{ isAuthenticaded, signIn, signOut, register, token, user }} >
       {children}
     </AuthContext.Provider>
   )

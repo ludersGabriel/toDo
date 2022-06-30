@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useAuth } from '../../context/auth/context'
 import { useLocale } from '../../context/locale/context'
+import { notify } from '../../fns/notify'
+import { UserRegisterInput } from '../../graphql/types'
 import { Input, Logo, Svg } from '../../styles/global'
 import { registerContent } from './content'
 import {
@@ -15,24 +18,32 @@ import {
   InputWrapper
 } from './styles'
 
-type RegisterValues = {
-  email: string
-  password: string
+type RegisterValues = UserRegisterInput & {
   confirmPassword: string
 }
 
 const defaultValues: RegisterValues = {
   email: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
+  name: ''
 }
 
 const Register = () => {
   const { register, handleSubmit, formState: { errors }, setFocus, getValues } = useForm({ defaultValues })
   const { locale } = useLocale()
+  const { register: onRegisterUser, signIn } = useAuth()
 
   async function handleRegister(data: RegisterValues) {
-    console.log(data)
+    try {
+      const user = await onRegisterUser({ email: data.email, name: data.name, password: data.password })
+      if (user) {
+        notify(`${registerContent[locale].registerSuccess}`)
+        signIn({ email: user.email, password: data.password })
+      }
+    } catch {
+      notify(`${registerContent[locale].alreadyRegistered}`, true)
+    }
   }
 
   useEffect(() => {
@@ -56,7 +67,7 @@ const Register = () => {
       <RegisterSep className='size'><p><span>{registerContent[locale].or}</span></p></RegisterSep>
       <RegisterForm onSubmit={handleSubmit(handleRegister)}>
         <InputWrapper>
-          <Input {
+          <Input autoFocus={true} {
             ...register('email', {
               required: { value: true, message: `${registerContent[locale].emailError}` }
             })}
@@ -79,7 +90,8 @@ const Register = () => {
           <div />
           <InputWrapper>
             <Input {...register('confirmPassword', {
-              validate: value => value === getValues('password') || 'Passwords must match'
+              validate: value => value === getValues('password') || `${registerContent[locale].wrongMatch}`,
+              required: { value: true, message: `${registerContent[locale].confirmPass}` }
             })}
               placeholder={`${registerContent[locale].confirmPass}`}
               type='password'
